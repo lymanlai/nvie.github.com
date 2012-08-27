@@ -87,7 +87,7 @@ easy:</p>
 projects and your pains will be history.</p>
 <pre><code class="language-objc"><span class="k">@implementation</span> <span class="nc">NSManagedObjectContext</span><span class="nl">(NSManagedObjectContextConvenienceMethods)</span>
 
-<span class="o">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nl">newObject:</span><span class="p">(</span><span class="n">Class</span><span class="p">)</span><span class="n">entity</span> <span class="p">{</span>
+<span class="k">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">newObject:</span><span class="p">(</span><span class="n">Class</span><span class="p">)</span><span class="nv">entity</span> <span class="p">{</span>
    <span class="k">return</span> <span class="p">[</span><span class="n">NSEntityDescription</span> <span class="nl">insertNewObjectForEntityForName:</span><span class="p">[</span><span class="n">entity</span> <span class="n">description</span><span class="p">]</span>
                                         <span class="nl">inManagedObjectContext:</span><span class="n">self</span><span class="p">];</span>
 <span class="p">}</span>

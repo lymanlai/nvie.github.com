@@ -180,7 +180,7 @@ so let’s go:</p>
 
 <span class="k">@implementation</span> <span class="nc">AppDelegate</span>
 
-<span class="o">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="n">init</span>
+<span class="k">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">init</span>
 <span class="p">{</span>
    <span class="n">self</span> <span class="o">=</span> <span class="p">[</span><span class="n">super</span> <span class="n">init</span><span class="p">];</span>
    <span class="k">if</span> <span class="p">(</span><span class="n">self</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">)</span> <span class="p">{</span>
@@ -189,13 +189,13 @@ so let’s go:</p>
    <span class="k">return</span> <span class="n">self</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">dealloc</span>
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">dealloc</span>
 <span class="p">{</span>
    <span class="p">[</span><span class="n">predicate</span> <span class="n">release</span><span class="p">];</span>
    <span class="p">[</span><span class="n">super</span> <span class="n">dealloc</span><span class="p">];</span>
 <span class="p">}</span>
 
-<span class="o">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nl">openEditor:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="n">sender</span>
+<span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">openEditor:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span>
 <span class="p">{</span>
    <span class="p">[</span><span class="n">NSApp</span> <span class="nl">beginSheet:</span><span class="n">sheet</span>
       <span class="nl">modalForWindow:</span><span class="n">mainWindow</span>
@@ -204,7 +204,7 @@ so let’s go:</p>
         <span class="nl">contextInfo:</span><span class="nb">nil</span><span class="p">];</span>
 <span class="p">}</span>
 
-<span class="o">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nl">closeEditor:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="n">sender</span>
+<span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">closeEditor:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span>
 <span class="p">{</span>
    <span class="p">[</span><span class="n">NSApp</span> <span class="nl">endSheet:</span><span class="n">sheet</span><span class="p">];</span>
    <span class="p">[</span><span class="n">sheet</span> <span class="nl">orderOut:</span><span class="n">sender</span><span class="p">];</span>

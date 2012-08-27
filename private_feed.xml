@@ -1477,14 +1477,13 @@ release management.&lt;/p&gt;
 all of our source code.&lt;/p&gt;
 &lt;h2&gt;Why git?&lt;/h2&gt;
 &lt;p&gt;For a thorough discussion on the pros and cons of Git compared to centralized
-source code control systems, &lt;a href="http://whygitisbetterthanx.com/"&gt;see&lt;/a&gt;
-&lt;a href="http://www.looble.com/git-vs-svn-which-is-better/"&gt;the&lt;/a&gt;
-&lt;a href="http://git.or.cz/gitwiki/GitSvnComparsion"&gt;web&lt;/a&gt;. There are plenty of flame wars
-going on there. As a developer, I prefer Git above all other tools around
+source code control systems, &lt;a href="http://whygitisbetterthanx.com/"&gt;see&lt;/a&gt; the
+&lt;a href="http://git.or.cz/gitwiki/GitSvnComparsion"&gt;web&lt;/a&gt;. There are plenty of flame
+wars going on there. As a developer, I prefer Git above all other tools around
 today. Git really changed the way developers think of merging and branching.
-From the classic &lt;span class="caps"&gt;CVS&lt;/span&gt;/Subversion world I came from, merging/branching has always
-been considered a bit scary (&amp;#x201C;beware of merge conflicts, they bite you!&amp;#x201D;) and
-something you only do every once in a while.&lt;/p&gt;
+From the classic &lt;span class="caps"&gt;CVS&lt;/span&gt;/Subversion world I came from, merging/branching has
+always been considered a bit scary (&amp;#x201C;beware of merge conflicts, they bite
+you!&amp;#x201D;) and something you only do every once in a while.&lt;/p&gt;
 &lt;p&gt;But with Git, these actions are extremely cheap and simple, and they are
 considered one of the core parts of your &lt;em&gt;daily&lt;/em&gt; workflow, really. For example,
 in &lt;span class="caps"&gt;CVS&lt;/span&gt;/Subversion &lt;a href="http://svnbook.red-bean.com"&gt;books&lt;/a&gt;, branching and merging is

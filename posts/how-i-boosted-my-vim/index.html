@@ -247,7 +247,7 @@ notably—scrolling.  In fact, it’s the only thing I use it for.</p>
 <p>Also, if you are a rookie Vim user, setting this value will make your Vim
 experience definitively feel more natural.</p>
 <p>To enable the mouse, use:</p>
-<pre><code class="language-vim"><span class="k">set</span> <span class="nb">mouse</span><span class="p">=</span>a</code></pre>
+<pre><code class="language-vim"><span class="k">set</span> <span class="nb">mouse</span><span class="p">=</span><span class="k">a</span></code></pre>
 <p>However, this comes at one big disadvantage: when you run Vim inside a
 terminal, the terminal itself cannot control your mouse anymore.  Therefore,
 you cannot select text anymore with the terminal (to copy it to the system
@@ -258,24 +258,24 @@ toggle your mouse “focus” between Vim and the terminal.</p>
 <p>Small plugins like these are really useful, yet have the additional benefit of
 lowering the barrier of learning the Vim scripting language.  At the core, this
 plugin exists of only one simple function:</p>
-<pre><code class="language-vim"><span class="k">fun</span><span class="p">!</span> s:ToggleMouse<span class="p">()</span>
+<pre><code class="language-vim"><span class="k">fun</span><span class="p">!</span> <span class="k">s</span>:ToggleMouse<span class="p">()</span>
     <span class="k">if</span> <span class="p">!</span>exists<span class="p">(</span><span class="s2">"s:old_mouse"</span><span class="p">)</span>
-        <span class="k">let</span> s:old_mouse <span class="p">=</span> <span class="c">"a"</span>
+        <span class="k">let</span> <span class="k">s</span>:old_mouse <span class="p">=</span> <span class="s2">"a"</span>
     <span class="k">endif</span>
 
-    <span class="k">if</span> &amp;<span class="nb">mouse</span> <span class="p">==</span> <span class="c">""</span>
-        <span class="k">let</span> &amp;<span class="nb">mouse</span> <span class="p">=</span> s:old_mouse
-        echo <span class="c">"Mouse is for Vim (" . &amp;mouse . ")"</span>
+    <span class="k">if</span> &amp;<span class="nb">mouse</span> <span class="p">==</span> <span class="s2">""</span>
+        <span class="k">let</span> &amp;<span class="nb">mouse</span> <span class="p">=</span> <span class="k">s</span>:old_mouse
+        echo <span class="s2">"Mouse is for Vim ("</span> . &amp;<span class="nb">mouse</span> . <span class="s2">")"</span>
     <span class="k">else</span>
-        <span class="k">let</span> s:old_mouse <span class="p">=</span> &amp;<span class="nb">mouse</span>
+        <span class="k">let</span> <span class="k">s</span>:old_mouse <span class="p">=</span> &amp;<span class="nb">mouse</span>
         <span class="k">let</span> &amp;<span class="nb">mouse</span><span class="p">=</span><span class="s2">""</span>
-        echo <span class="c">"Mouse is for terminal"</span>
+        echo <span class="s2">"Mouse is for terminal"</span>
     <span class="k">endif</span>
 <span class="k">endfunction</span></code></pre>
 <h3>Get efficient: shortcut mappings</h3>
 <p>The following trick is a really small one, but a super-efficient one, since it
 strips off two full keystrokes from almost every Vim command:</p>
-<pre><code class="language-vim">nnoremap ; :</code></pre>
+<pre><code class="language-vim"><span class="nb">nnoremap</span> ; :</code></pre>
 <p>For example, to save a file, you type <code>:w</code> normally, which means:</p>
 <ol>
 <li>Press and hold Shift</li>
@@ -304,8 +304,8 @@ map <span class="p">&lt;</span><span class="k">right</span><span class="p">&gt;<
 pressing down jumpes your cursor “over” the current line to the next line.  It
 changes behaviour so that it jumps to the next row in the editor (much more
 natural):</p>
-<pre><code class="language-vim">nnoremap <span class="k">j</span> gj
-nnoremap <span class="k">k</span> gk</code></pre>
+<pre><code class="language-vim"><span class="nb">nnoremap</span> <span class="k">j</span> gj
+<span class="nb">nnoremap</span> <span class="k">k</span> gk</code></pre>
 <p>When you start to use Vim more professionally, you want to work with multiple
 windows open.  Navigating requires you to press <code>C-w</code> first, then a navigation
 command (h, j, k, l).  This makes it easier to navigate focus through windows:</p>
