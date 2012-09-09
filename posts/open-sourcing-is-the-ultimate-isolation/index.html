@@ -1,0 +1,273 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+	<head>
+		<meta charset="utf-8"/>
+		<title>Open Sourcing: the Ultimate Isolation &raquo; nvie.com</title>
+		<link href='http://fonts.googleapis.com/css?family=Droid+Sans+Mono' rel='stylesheet' type='text/css'/>
+		<link rel="stylesheet" type="text/css" href="/css/style.css" />
+		<link rel="stylesheet" type="text/css" href="/css/syntax.css" />
+		<link rel="stylesheet" type="text/css" href="/css/fontface.css" />
+		<meta name="viewport" content="width=700, user-scalable=yes, maximum-scale=1.5" />
+		<link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="/css/mobile.css" type="text/css" /> 
+		<link rel="stylesheet" media="only screen and (max-device-width: 1024px)" href="/css/mobile.css" type="text/css" /> 
+		<link rel="stylesheet" media="print" type="text/css" href="/css/print.css" />
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+		<script type="text/javascript" src="/js/relatize_date.js"></script>
+		
+		<script type="text/javascript" src="/js/site.js"></script>
+		<script type="text/javascript" src="/js/defeatthefout.js"></script>
+		<meta name="generator" content="nanoc"/>
+		<meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1"/>
+		<link href="/img/favicon.ico" rel="shortcut icon" type="image/x-icon" /> 
+		<link href="/img/icon.png" rel="apple-touch-icon" /> 
+		<link rel="alternate" type="application/atom+xml" href="http://feeds.feedburner.com/nvie" />
+
+        <script type="text/javascript" src="//use.typekit.net/nge1fhs.js"></script>
+        <script type="text/javascript">try{Typekit.load();}catch(e){}</script></script></script>
+
+		
+		
+		<script type="text/javascript"> 
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+		</script> 
+		<script type="text/javascript"> 
+		var pageTracker = _gat._getTracker("UA-7780973-1");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+		</script>
+		
+
+        <script type="text/javascript">
+        /* <![CDATA[ */
+            (function() {
+                var s = document.createElement('script'), t = document.getElementsByTagName('script')[0];
+                s.type = 'text/javascript';
+                s.async = true;
+                s.src = 'http://api.flattr.com/js/0.6/load.js?mode=auto';
+                t.parentNode.insertBefore(s, t);
+            })();
+        /* ]]> */</script>
+	</head>
+	<body>
+		<div id="header">
+			<h1><a href="/"><span id="nvie">nvie</span><span id="dot">.</span><span id="ext">com</span></a></h1>
+			<ul>
+                <li id="home" ><a href="/">Home</a></li>
+                <li id="posts"  class='current'><a href="/posts/">Posts</a></li>
+                
+                <li id="about" ><a href="/about/">About me</a></li>
+			</ul>
+        </div>
+		<div id="actionbox" style="display: none">
+            <div id="rss"><a href="http://feeds.feedburner.com/nvie"><img src="/img/rss.png" alt="Subscribe" title="Subscribe" width="16" height="16" /></a></div>
+            <div id="tweet"><a href="http://twitter.com/share?url=http://nvie.com/posts/open-sourcing-is-the-ultimate-isolation/&via=nvie&text=Open%20Sourcing:%20the%20Ultimate%20Isolation"><img src='/img/twitter.png' width="16" height="16" alt="Tweet this!" title="Tweet this!" /></a></div>
+
+            <!-- Ad -->
+            <div id="influads_block" class="influads_block"> </div>
+            <script type="text/javascript">(function(){ var acc =   "acc_535d576_pub";var st ="css";var or= "130";var e=document.getElementsByTagName("script")[0];var d=document.createElement("script");d.src=('https:' == document.location.protocol ?'https://' : 'http://') +"engine.influads.com/show/"+or+"/"+st+"/"+acc;d.type="text/javascript"; d.async=true; d.defer=true; e.parentNode.insertBefore(d,e);})();</script>
+		</div>
+		<div id="main">
+			<div id="post">
+    
+<div class="flattr-quick no-print"><a class="FlattrButton" style="display:none;" href="http://nvie.com/posts/open-sourcing-is-the-ultimate-isolation/"></a></div>
+<h1 style="clear: left">Open Sourcing: the Ultimate Isolation</h1>
+
+<p id="permalink" class="print-only">http://nvie.com/posts/open-sourcing-is-the-ultimate-isolation/</p>
+<p class="no-print created_at dateline">Published: <span class="reldate">September 09, 2012</span></p><p class="print-only created_at dateline">Published: <span>September 09, 2012</span></p>
+<p>Reflecting on how I build software lately, I noticed a pattern.  I tend to
+write libraries in absolute isolation, <em>as if they were open sourced</em> and the
+world is watching along.</p>
+<p>Let me try to explain why this works for me.</p>
+<h2>Where Theory Fails</h2>
+<blockquote>
+<p><em>“The difference between theory and practice is that, in theory, there is
+none.”</em></p>
+</blockquote>
+<p>We have all been schooled to isolate units of software into reusable
+components.  Software engineering literature refers to this as separation of
+concerns since decades.  It reduces the big problem into smaller
+non-overlapping problems.</p>
+<p>We obviously try doing so, by putting related logic into modules, libraries
+and whatnot.  Yet, in practice, so many real world projects fail at their
+attempts and end up evolving into something unnecessarily complicated.</p>
+<p>The main problem with this is that it becomes increasingly hard to comprehend
+and reason about your software, not to mention the “increased fun” maintaining
+it.</p>
+<p>Why is it so hard to actually achieve this in practice?  Separating concerns
+apparently is easier said than done.</p>
+<h2>How Things Evolve</h2>
+<p>The need for a new library often arises when solving a larger problem
+top-down.  In the quest of solving a larger problem, you need to create
+a smaller component first that is required to get to a fully working solution.
+This is what most of our work as engineers is about—while solving a larger
+problem, we run into bumps along the road.  When we do, we stop, fix the bump,
+and continue on our journey to solving the large problem.</p>
+<p>In our rush to arrive at our end destination, we want to fix any bumps as
+quickly as possible.  For many good reasons, mostly.  We might have
+a deadline, or we are afraid to get lost in details and lose focus on the
+bigger problem we were actually solving.</p>
+<p>In short, we tend to see those bumps as unsolicited chores that are blocking
+us and we want to spend as little time as possible at overcoming them.  From
+a quality perspective, however, this may not be the best route to take.  So
+the least you can do is create that <em>Technical Debt</em> ticket, feel less guilty,
+and move on :)</p>
+<p>I’ve never seen a project work any more glorious than this.</p>
+<h2>Step Back, Breathe, Accept, Open Source</h2>
+<p>Running into these bumps sucks.  You’re frustrated that you’re held up and are
+continuously thinking: dammit, I don’t want to deal with this now.  The
+reality often is that you don’t have a choice.</p>
+<p>Instead, step back a few steps, take a deep breath, and accept that you’ll
+have to spend more time on this problem than budgeted.  This enables the
+mental rest to make a good engineering decision without too much frustration
+emotion involved.</p>
+<p><b>What I like to do at this moment, is to start a new open source project.</b></p>
+<p>Not necessarily a public one, but I do set it up like it is and <em>actually
+consider</em> it to be, or eventually become, open.  I start out with a <span class="caps">README</span>
+decribing the problem and the <span class="caps">API</span> I’d like it to have.  And in the case of
+Python, I also create a <code>setup.py</code> so integrating this into the original
+project is only a <code>pip install</code> away.</p>
+<p>Then, just start implementing it.</p>
+<p>Let me try to highlight the benefits this approach provides.</p>
+<h2>You’re More Likely To Do It Right</h2>
+<p>The pressure you get from pretending (or knowing) that many others will read
+your code, pushes you to do it right.  I’d ask myself continuously: would this
+be an <span class="caps">API</span> that I’d show off to the outside world and be proud of?  Could
+I truly explain this <span class="caps">API</span> in a <span class="caps">README</span> so that people would understand?  If not,
+I don’t implement it like that and push harder.</p>
+<p>Many eyeballs make you feel more responsible.  Writing stuff in private for
+yourself, doesn’t.</p>
+<h2>No Cheating</h2>
+<p>A big difference between starting an actual new project, or developing it as
+one-of-many internal libraries, is that it’s impossible to rely on other parts
+of the end product.  For example, that convenient project-specific helper
+function you already wrote is easily included in a module, but not so much in
+another project.</p>
+<p>In an open source project, you simply cannot cheat on yourself this way and
+you’re forced to come up with a better solution.  This might feel inconvenient
+at first, but remember that it’s easy to write complex software and it takes
+more care and dedication to write simpler software.</p>
+<p>As a way of visualising this approach: compare programming to electrical
+engineering for a minute.  Say you have to create a circuit board of some
+sort.</p>
+<p><img src="/img/2012/09/circuit-board.jpg" class="shadow border center" alt=""></p>
+<p>The chip on this board is analogous to an open source software project.  Its
+internals are nicely abstracted away, the pins of the chip form its <span class="caps">API</span>, it’s
+probably well-tested, well-documented and can be reused immediately.  It is
+physically impossible to connect to any of the internals of it—which is
+exactly the point of abstraction.</p>
+<p>Looking at the circuit board, everything about this falls into place pretty
+obviously.</p>
+<p>As programmers, we often fool ourselves that we’re <em>isolating</em> logic into
+modules/libraries, while in fact we’re merely <em>organising</em> it.  Modules will
+oftentimes still contain project-specific dependencies.  (As a good litmus
+test, move that module to an empty directory and use it.  If it breaks, it
+wasn’t truly isolated.)</p>
+<p>The curse with programming is that it’s so easy to create these dependencies.
+They are only one <code>import</code> statement away.  Developers live in a world where
+that temptation continuously lurks.</p>
+<p>But by isolating code into a stand-alone project, you can remove this
+temptation wholly, thereby reducing ways of cheating on yourself.</p>
+<h2>Simplicity Pays</h2>
+<p>Another big benefit of truly isolating your libraries this way, is that you
+are forced to think about its <span class="caps">API</span>.  It’s the <em>only</em> way of interacting with
+the library after all.  Doing this, you’ll naturally feel the urge to
+simplify.  Complex APIs lead to complicated documentation and complex tests.
+The opposite applies, too, fortunately, and you’ll naturally be inclined to
+simplify.</p>
+<p>A concrete example of this:  When you are hacking in a web environment, you
+most likely have “the request” or “the DB connection” at your disposal any
+time.  When you put your library in a module, it’s easy for these to become
+implicit dependencies of your library.  Your library may pretty well work
+outside of a request context, however, and in fact, the only thing you
+actually need from the request could be a <code>User</code> instance.  When you build
+your library as a separate project, these decisions fall into place
+effortlessly.  In the end, this makes your library more decoupled, more
+generic, and overall cleaner.  And as such, simpler.</p>
+<p>True Isolation™ is the ultimate catalyst of simplicity.</p>
+<h2>Sharing Can Pay, Too</h2>
+<p>Even if you’re only using this technique privately to produce better software
+for yourself, this pays off already in a technical sense.</p>
+<p>But open sourcing can also pay off in non-technical ways.  When it fits your
+company’s strategy, you now have the choice to actually publish your project
+at any time, since it’s been written for the public from the beginning.  If it
+solves a common problem, others may like it and take interest in following it
+or even contributing to it.  This may open up a whole new world of users
+providing feedback and improvements through code or documentation
+contributions.</p>
+<p>Your company may come across as an interesting place to work for to talented
+people.  Your open source project can be your company’s banner.  We’ve seen
+this with companies like <a href="http://joyent.com/">Joyent</a> (of Node.js fame),
+<a href="http://www.10gen.com/">10gen</a> (of MongoDB fame) and
+<a href="http://www.opscode.com/">Opscode</a> (of Chef fame), just to name a few.  Open
+sourcing has been an important marketing value to these companies and they
+have attracted many talented folks through their high-quality work.</p>
+<p>Just always remember that <em>simpler</em> projects have a much lower barrier for
+contributors, so these are more likely to receive patches.  Which by itself is
+another good reason to simplify your libraries :)</p>
+<h2>How I Built RQ</h2>
+<p>Many of the things I created recently, I created this way.  Back a few months
+ago, I needed a super-simple solution to put work in the background.  I was
+working on a startup idea, which I was creating a proof of concept for.  It
+was a small Flask web app, and I used <a href="http://flask.pocoo.org/snippets/73/">this
+snippet</a> initially to offload work to the
+background.  It did the work fine, but I soon needed it to do more, so I kept
+tweaking it until it was no longer a snippet, but a library.  Although it was
+nicely organised in a directory, it was still tailored to the specific product
+I was creating.</p>
+<p>This is where I decided to step back and started building that library like an
+open source project, which became <a href="http://python-rq.org/">RQ</a>, of course.
+After using it privately for about four months, its <span class="caps">API</span> kept changing quite
+a bit, but its use became more general over time.  I started reusing it for
+other projects I was working on, until I considered it stable enough.
+I believed it could be of help to other Python engineers, so I <a href="/posts/introducing-rq/">decided to
+open source RQ</a> in March.</p>
+<p>Eventually I dropped the original startup idea, but I still have RQ.  Had
+I not open sourced it, it would now be buried with the rest of that project’s
+code.</p>
+<p>Open sourcing pays off.  Even if you do it in private.</p>
+</div>
+
+
+<div class="flattr-reminder no-print">
+If you find this post useful, please <a class="flattr-link" href="https://flattr.com/thing/877503/"><img src="/img/flattrblack.png" width="43" height="10" /></a> it.
+</div>
+
+
+<hr style="margin-top: 16px; margin-bottom: 16px" />
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  var disqus_identifier = 'open-sourcing-is-the-ultimate-isolation';
+  var disqus_url = 'http://nvie.com/posts/open-sourcing-is-the-ultimate-isolation/';
+  var disqus_shortname = 'nvie';
+  var disqus_title = "Open Sourcing: the Ultimate Isolation";
+  (function() {
+   var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+   dsq.src = 'http://nvie.disqus.com/embed.js';
+   (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=nvie">comments powered by Disqus.</a></noscript>
+
+		</div>
+		<div id="footer">
+            <p>Vincent Driessen is an independent Python and iOS software
+            engineer and consultant from the Netherlands. You may
+            <a href="http://www.3rdcloud.com">hire him</a>.
+			</p>
+		</div>
+
+		
+		
+		<script type="text/javascript">
+			(function () {
+			var s = document.createElement('script'); s.async = true;
+			s.src = 'http://disqus.com/forums/nvie/count.js';
+			(document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+			}());
+		</script>
+		
+	</body>
+</html>

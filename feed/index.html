@@ -2,13 +2,175 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <id>http://nvie.com/</id>
   <title>nvie.com</title>
-  <updated>2012-03-27T22:00:00Z</updated>
+  <updated>2012-09-08T22:00:00Z</updated>
   <link rel="alternate" href="http://nvie.com/"/>
   <link rel="self" href="http://feeds.feedburner.com/nvie"/>
   <author>
     <name>Vincent Driessen</name>
     <uri>http://nvie.com/about</uri>
   </author>
+  <entry>
+    <id>tag:nvie.com,2012-09-09:/posts/open-sourcing-is-the-ultimate-isolation/</id>
+    <title type="html">Open Sourcing: the Ultimate Isolation</title>
+    <published>2012-09-08T22:00:00Z</published>
+    <updated>2012-09-08T22:00:00Z</updated>
+    <link rel="alternate" href="http://nvie.com/posts/open-sourcing-is-the-ultimate-isolation/"/>
+    <content type="html">&lt;p&gt;Reflecting on how I build software lately, I noticed a pattern.  I tend to
+write libraries in absolute isolation, &lt;em&gt;as if they were open sourced&lt;/em&gt; and the
+world is watching along.&lt;/p&gt;
+&lt;p&gt;Let me try to explain why this works for me.&lt;/p&gt;
+&lt;h2&gt;Where Theory Fails&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;&amp;#x201C;The difference between theory and practice is that, in theory, there is
+none.&amp;#x201D;&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;We have all been schooled to isolate units of software into reusable
+components.  Software engineering literature refers to this as separation of
+concerns since decades.  It reduces the big problem into smaller
+non-overlapping problems.&lt;/p&gt;
+&lt;p&gt;We obviously try doing so, by putting related logic into modules, libraries
+and whatnot.  Yet, in practice, so many real world projects fail at their
+attempts and end up evolving into something unnecessarily complicated.&lt;/p&gt;
+&lt;p&gt;The main problem with this is that it becomes increasingly hard to comprehend
+and reason about your software, not to mention the &amp;#x201C;increased fun&amp;#x201D; maintaining
+it.&lt;/p&gt;
+&lt;p&gt;Why is it so hard to actually achieve this in practice?  Separating concerns
+apparently is easier said than done.&lt;/p&gt;
+&lt;h2&gt;How Things Evolve&lt;/h2&gt;
+&lt;p&gt;The need for a new library often arises when solving a larger problem
+top-down.  In the quest of solving a larger problem, you need to create
+a smaller component first that is required to get to a fully working solution.
+This is what most of our work as engineers is about&amp;#x2014;while solving a larger
+problem, we run into bumps along the road.  When we do, we stop, fix the bump,
+and continue on our journey to solving the large problem.&lt;/p&gt;
+&lt;p&gt;In our rush to arrive at our end destination, we want to fix any bumps as
+quickly as possible.  For many good reasons, mostly.  We might have
+a deadline, or we are afraid to get lost in details and lose focus on the
+bigger problem we were actually solving.&lt;/p&gt;
+&lt;p&gt;In short, we tend to see those bumps as unsolicited chores that are blocking
+us and we want to spend as little time as possible at overcoming them.  From
+a quality perspective, however, this may not be the best route to take.  So
+the least you can do is create that &lt;em&gt;Technical Debt&lt;/em&gt; ticket, feel less guilty,
+and move on :)&lt;/p&gt;
+&lt;p&gt;I&amp;#x2019;ve never seen a project work any more glorious than this.&lt;/p&gt;
+&lt;h2&gt;Step Back, Breathe, Accept, Open Source&lt;/h2&gt;
+&lt;p&gt;Running into these bumps sucks.  You&amp;#x2019;re frustrated that you&amp;#x2019;re held up and are
+continuously thinking: dammit, I don&amp;#x2019;t want to deal with this now.  The
+reality often is that you don&amp;#x2019;t have a choice.&lt;/p&gt;
+&lt;p&gt;Instead, step back a few steps, take a deep breath, and accept that you&amp;#x2019;ll
+have to spend more time on this problem than budgeted.  This enables the
+mental rest to make a good engineering decision without too much frustration
+emotion involved.&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;What I like to do at this moment, is to start a new open source project.&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;Not necessarily a public one, but I do set it up like it is and &lt;em&gt;actually
+consider&lt;/em&gt; it to be, or eventually become, open.  I start out with a &lt;span class="caps"&gt;README&lt;/span&gt;
+decribing the problem and the &lt;span class="caps"&gt;API&lt;/span&gt; I&amp;#x2019;d like it to have.  And in the case of
+Python, I also create a &lt;code&gt;setup.py&lt;/code&gt; so integrating this into the original
+project is only a &lt;code&gt;pip install&lt;/code&gt; away.&lt;/p&gt;
+&lt;p&gt;Then, just start implementing it.&lt;/p&gt;
+&lt;p&gt;Let me try to highlight the benefits this approach provides.&lt;/p&gt;
+&lt;h2&gt;You&amp;#x2019;re More Likely To Do It Right&lt;/h2&gt;
+&lt;p&gt;The pressure you get from pretending (or knowing) that many others will read
+your code, pushes you to do it right.  I&amp;#x2019;d ask myself continuously: would this
+be an &lt;span class="caps"&gt;API&lt;/span&gt; that I&amp;#x2019;d show off to the outside world and be proud of?  Could
+I truly explain this &lt;span class="caps"&gt;API&lt;/span&gt; in a &lt;span class="caps"&gt;README&lt;/span&gt; so that people would understand?  If not,
+I don&amp;#x2019;t implement it like that and push harder.&lt;/p&gt;
+&lt;p&gt;Many eyeballs make you feel more responsible.  Writing stuff in private for
+yourself, doesn&amp;#x2019;t.&lt;/p&gt;
+&lt;h2&gt;No Cheating&lt;/h2&gt;
+&lt;p&gt;A big difference between starting an actual new project, or developing it as
+one-of-many internal libraries, is that it&amp;#x2019;s impossible to rely on other parts
+of the end product.  For example, that convenient project-specific helper
+function you already wrote is easily included in a module, but not so much in
+another project.&lt;/p&gt;
+&lt;p&gt;In an open source project, you simply cannot cheat on yourself this way and
+you&amp;#x2019;re forced to come up with a better solution.  This might feel inconvenient
+at first, but remember that it&amp;#x2019;s easy to write complex software and it takes
+more care and dedication to write simpler software.&lt;/p&gt;
+&lt;p&gt;As a way of visualising this approach: compare programming to electrical
+engineering for a minute.  Say you have to create a circuit board of some
+sort.&lt;/p&gt;
+&lt;p&gt;&lt;img src="http://nvie.com/img/2012/09/circuit-board.jpg" class="shadow border center" alt=""&gt;&lt;/p&gt;
+&lt;p&gt;The chip on this board is analogous to an open source software project.  Its
+internals are nicely abstracted away, the pins of the chip form its &lt;span class="caps"&gt;API&lt;/span&gt;, it&amp;#x2019;s
+probably well-tested, well-documented and can be reused immediately.  It is
+physically impossible to connect to any of the internals of it&amp;#x2014;which is
+exactly the point of abstraction.&lt;/p&gt;
+&lt;p&gt;Looking at the circuit board, everything about this falls into place pretty
+obviously.&lt;/p&gt;
+&lt;p&gt;As programmers, we often fool ourselves that we&amp;#x2019;re &lt;em&gt;isolating&lt;/em&gt; logic into
+modules/libraries, while in fact we&amp;#x2019;re merely &lt;em&gt;organising&lt;/em&gt; it.  Modules will
+oftentimes still contain project-specific dependencies.  (As a good litmus
+test, move that module to an empty directory and use it.  If it breaks, it
+wasn&amp;#x2019;t truly isolated.)&lt;/p&gt;
+&lt;p&gt;The curse with programming is that it&amp;#x2019;s so easy to create these dependencies.
+They are only one &lt;code&gt;import&lt;/code&gt; statement away.  Developers live in a world where
+that temptation continuously lurks.&lt;/p&gt;
+&lt;p&gt;But by isolating code into a stand-alone project, you can remove this
+temptation wholly, thereby reducing ways of cheating on yourself.&lt;/p&gt;
+&lt;h2&gt;Simplicity Pays&lt;/h2&gt;
+&lt;p&gt;Another big benefit of truly isolating your libraries this way, is that you
+are forced to think about its &lt;span class="caps"&gt;API&lt;/span&gt;.  It&amp;#x2019;s the &lt;em&gt;only&lt;/em&gt; way of interacting with
+the library after all.  Doing this, you&amp;#x2019;ll naturally feel the urge to
+simplify.  Complex APIs lead to complicated documentation and complex tests.
+The opposite applies, too, fortunately, and you&amp;#x2019;ll naturally be inclined to
+simplify.&lt;/p&gt;
+&lt;p&gt;A concrete example of this:  When you are hacking in a web environment, you
+most likely have &amp;#x201C;the request&amp;#x201D; or &amp;#x201C;the DB connection&amp;#x201D; at your disposal any
+time.  When you put your library in a module, it&amp;#x2019;s easy for these to become
+implicit dependencies of your library.  Your library may pretty well work
+outside of a request context, however, and in fact, the only thing you
+actually need from the request could be a &lt;code&gt;User&lt;/code&gt; instance.  When you build
+your library as a separate project, these decisions fall into place
+effortlessly.  In the end, this makes your library more decoupled, more
+generic, and overall cleaner.  And as such, simpler.&lt;/p&gt;
+&lt;p&gt;True Isolation&amp;#x2122; is the ultimate catalyst of simplicity.&lt;/p&gt;
+&lt;h2&gt;Sharing Can Pay, Too&lt;/h2&gt;
+&lt;p&gt;Even if you&amp;#x2019;re only using this technique privately to produce better software
+for yourself, this pays off already in a technical sense.&lt;/p&gt;
+&lt;p&gt;But open sourcing can also pay off in non-technical ways.  When it fits your
+company&amp;#x2019;s strategy, you now have the choice to actually publish your project
+at any time, since it&amp;#x2019;s been written for the public from the beginning.  If it
+solves a common problem, others may like it and take interest in following it
+or even contributing to it.  This may open up a whole new world of users
+providing feedback and improvements through code or documentation
+contributions.&lt;/p&gt;
+&lt;p&gt;Your company may come across as an interesting place to work for to talented
+people.  Your open source project can be your company&amp;#x2019;s banner.  We&amp;#x2019;ve seen
+this with companies like &lt;a href="http://joyent.com/"&gt;Joyent&lt;/a&gt; (of Node.js fame),
+&lt;a href="http://www.10gen.com/"&gt;10gen&lt;/a&gt; (of MongoDB fame) and
+&lt;a href="http://www.opscode.com/"&gt;Opscode&lt;/a&gt; (of Chef fame), just to name a few.  Open
+sourcing has been an important marketing value to these companies and they
+have attracted many talented folks through their high-quality work.&lt;/p&gt;
+&lt;p&gt;Just always remember that &lt;em&gt;simpler&lt;/em&gt; projects have a much lower barrier for
+contributors, so these are more likely to receive patches.  Which by itself is
+another good reason to simplify your libraries :)&lt;/p&gt;
+&lt;h2&gt;How I Built RQ&lt;/h2&gt;
+&lt;p&gt;Many of the things I created recently, I created this way.  Back a few months
+ago, I needed a super-simple solution to put work in the background.  I was
+working on a startup idea, which I was creating a proof of concept for.  It
+was a small Flask web app, and I used &lt;a href="http://flask.pocoo.org/snippets/73/"&gt;this
+snippet&lt;/a&gt; initially to offload work to the
+background.  It did the work fine, but I soon needed it to do more, so I kept
+tweaking it until it was no longer a snippet, but a library.  Although it was
+nicely organised in a directory, it was still tailored to the specific product
+I was creating.&lt;/p&gt;
+&lt;p&gt;This is where I decided to step back and started building that library like an
+open source project, which became &lt;a href="http://python-rq.org/"&gt;RQ&lt;/a&gt;, of course.
+After using it privately for about four months, its &lt;span class="caps"&gt;API&lt;/span&gt; kept changing quite
+a bit, but its use became more general over time.  I started reusing it for
+other projects I was working on, until I considered it stable enough.
+I believed it could be of help to other Python engineers, so I &lt;a href="http://nvie.com/posts/introducing-rq/"&gt;decided to
+open source RQ&lt;/a&gt; in March.&lt;/p&gt;
+&lt;p&gt;Eventually I dropped the original startup idea, but I still have RQ.  Had
+I not open sourced it, it would now be buried with the rest of that project&amp;#x2019;s
+code.&lt;/p&gt;
+&lt;p&gt;Open sourcing pays off.  Even if you do it in private.&lt;/p&gt;</content>
+    <summary type="html">&lt;p&gt;Reflecting on how I build software lately, I noticed a pattern.  I tend to
+write libraries in absolute isolation, &lt;em&gt;as if they were open sourced&lt;/em&gt; and the
+world is watching along.&lt;/p&gt;
+&lt;p&gt;In this post I try to explain why this works so well for me.&lt;/p&gt;</summary>
+  </entry>
   <entry>
     <id>tag:nvie.com,2012-03-28:/posts/introducing-rq/</id>
     <title type="html">Introducing RQ</title>
