@@ -13,9 +13,13 @@
 		<link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="/css/mobile.css" type="text/css" /> 
 		<link rel="stylesheet" media="only screen and (max-device-width: 1024px)" href="/css/mobile.css" type="text/css" /> 
 		<link rel="stylesheet" media="print" type="text/css" href="/css/print.css" />
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+		<script type="text/javascript" src="/js/jquery.min.js"></script>
 		<script type="text/javascript" src="/js/relatize_date.js"></script>
 		
+		<script type="text/javascript">
+  			var disqus_developer = 1;
+		</script>
+  		
 		<script type="text/javascript" src="/js/site.js"></script>
 		<script type="text/javascript" src="/js/defeatthefout.js"></script>
 		<meta name="generator" content="nanoc"/>
@@ -28,16 +32,6 @@
         <script type="text/javascript">try{Typekit.load();}catch(e){}</script></script></script>
 
 		
-		
-		<script type="text/javascript"> 
-		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-		</script> 
-		<script type="text/javascript"> 
-		var pageTracker = _gat._getTracker("UA-7780973-1");
-		pageTracker._initData();
-		pageTracker._trackPageview();
-		</script>
 		
 
         <script type="text/javascript">
@@ -72,99 +66,75 @@
 		<div id="main">
 			<div id="post">
     
-<div class="flattr-quick no-print"><a class="FlattrButton" style="display:none;" href="http://nvie.com/posts/pin-your-packages/"></a></div>
-<h1 style="clear: left">Pin Your Packages</h1>
+<h1>Pin Your Packages</h1>
 
 <p id="permalink" class="print-only">http://nvie.com/posts/pin-your-packages/</p>
-<p class="no-print created_at dateline">Published: <span class="reldate">September 12, 2012</span></p><p class="print-only created_at dateline">Published: <span>September 12, 2012</span></p>
-<p>In building your Python application and its dependencies for production, you
-want to make sure that your builds are predictable and deterministic.
-Therefore, always pin your dependencies.</p>
-<p>A few best practices.</p>
-<h3>Pin Explicitly</h3>
-<p>Don’t ever use these styles in <code>requirements.txt</code>:</p>
+<p class="no-print created_at dateline">Published: <span class="reldate">September 10, 2012</span></p><p class="print-only created_at dateline">Published: <span>September 10, 2012</span></p>
+<p>In order to build your Python application and its dependencies for production,
+you want to make sure that your builds are predictable and deterministic.
+Therefore, <b>always pin your dependencies</b>.</p>
+<p>Don&#8217;t ever use these in <code>requirements.txt</code>:</p>
 <ul>
-<li><code>lxml</code></li>
+	<li><code>lxml</code></li>
 	<li><code>lxml&gt;=2.2.0</code></li>
 	<li><code>lxml&gt;=2.2.0,&lt;2.3.0</code></li>
-</ul><p>Instead, pin them:</p>
+</ul>
+<p>Instead, pin them:</p>
 <ul>
-<li><code>lxml==2.3.4</code></li>
-</ul><p>If you don’t, you cannot know what you’ll get when you run <code>pip install</code>.
-Even if you rebuild the env every time, you can’t predict it.  The outcome
-relies on a) what’s currently installed, and b) what’s the current version on
-PyPI.</p>
-<p>Your development, staging, and production environments (not to mention your
-team members’ ones) will eventually run out of sync.  Worse even, this cannot
-be fixed by rerunning <code>pip install</code>.  It’s waiting for bad things to happen in
-production.</p>
-<p>The only way of making your builds deterministic, is if you pin <em>every</em> single
-package dependency.</p>
-<p>Does this mean you’ll miss out on automatic minor releases?  Well, yes, you
-will.  But think of it.  It’s impossible to distinguish between a new release
-that fixes bugs, or a new release that introduced bugs.  The former will
-improve your code, while the latter <a href="http://twitter.com/mitsuhiko/status/240454487490326528">may
-break</a> it.  You are
-leaving it up to coincidence now.  There is only one way to retake control:</p>
+	<li><code>lxml==2.3.4</code></li>
+</ul>
+<h3>Why not use the first three ways?</h3>
+<p>Your builds can&#8217;t ever be deterministic.</p>
+<p>It&#8217;s unpredictable what version will be installed in your environments when
+you run <code>pip install</code>&#8212;it depends on what&#8217;s already installed, and on what
+version is the best match on PyPI at the moment you run it.</p>
+<p>Each team member probably has a few environments for development and testing,
+and then there&#8217;s the production environment.  Depending on the time of
+installation, each of these environments can have a different version
+installed.</p>
+<p>Additionally, the problem can&#8217;t be fixed by rerunning <code>pip install</code>.  There
+simply is no way to predict what versions will land in what environment, even
+if you rebuild the whole environment from scratch each time.</p>
+<p>It&#8217;s waiting for bad things to happen in production.</p>
+<h3>Pin for Predictability</h3>
+<p>There is only one way of making your builds deterministic.  You should pin
+<em>every</em> single package dependency.  However, there is one disadvantage with
+this, and it&#8217;s often used as the excuse not to do it&#8212;you&#8217;ll miss out on the
+bugfix releases.</p>
+<p>Well, yes, you will.  But think of it.  It&#8217;s impossible to distinguish between
+a new release that fixes bugs, or a new release that introduced bugs.  The
+former will improve your code, while the latter may break it.  You are leaving
+it up to coincidence now.  There is only one way to retake control:</p>
 <blockquote>
-<p><em>Pin every dependency.</em></p>
+<p><b>Always pin your dependencies.</b></p>
 </blockquote>
-<h3>Check for Updates Automatically</h3>
-<p>Pinning implies explicitly upgrading.  Therefore, you should check
-dependencies automatically, at regular intervals.  I wrote a small tool that
-can help with this: <a href="https://github.com/nvie/pip-review">pip-review</a>.  It will
-check for available updates of your pinned packages on PyPI, and report about
-them when available:</p>
-<pre><code class="language-console"><span class="gp">$</span> pip-review
-<span class="go">requests==0.14.0 available (you have 0.13.2)</span>
-<span class="go">redis==2.6.2 available (you have 2.4.9)</span>
-<span class="go">rq==0.3.2 available (you have 0.3.0)</span></code></pre>
-<p>It’s advisable to pick a fixed schedule to run this.  For example, every
-monday during a weekly standup meeting with your engineering team.  Make it
-a point on the agenda.  You discuss pip-review’s output, inspect changelogs,
-or just blindly upgrade them.  But you should do it explicitly.  You have the
-chance to run with them for a while, before pushing those versions to
-production.</p>
-<h3>Also Pin Your Dependency’s Dependencies</h3>
-<p>For the same reasons as stated above, you should also pin dependency’s
-dependencies.  For example, don’t just pin this:</p>
-<pre><code class="language-text">Flask==0.9</code></pre>
-<p>But also these:</p>
-<pre><code class="language-text">Flask==0.9
-Jinja2==2.6
-Werkzeug==0.8.3</code></pre>
-<p>Heroku <a href="https://devcenter.heroku.com/articles/python-pip#best-practices">advises
-this</a>, too.
-Always remember that Werkzeug could get updated to 0.8.4 without you noticing.
-A simple <code>pip install Flask</code> in another env could lead to envs with different
-Werkzeug versions.</p>
-<p>Be explicit and let <code>pip-review</code> check for updates.</p>
-<h3>Warning: Don’t Do This With Libraries</h3>
-<p>Don’t pin everything when you’re writing libraries!  Otherwise, you’ll have to
-release a new version of the library whenever a base dependency is released.
-It’s safe to use the bounded qualifiers there.</p>
+<p>This does imply that you need to look at every dependency upgrade in
+a development environment first, and allow each explicitly.  This may be
+tedious, but not when you use the right tooling.</p>
+<h3>Meet pip-refresh</h3>
+<p>Meet <a href="https://github.com/nvie/pip-refresh"><code>pip-refresh</code></a>.  It&#8217;s a tool I wrote
+for assisting in this process.  It will check for available package updates
+for all packages installed in your environment:</p>
+$ pip-refresh
+show
+example
+outout
+here
+<p>I like to run this script every monday, during a team standup meeting, to see
+whether new versions are available and decide with the team which ones to
+upgrade.  On many occassions, you can just upgrade them all and if things
+start to fail, revert those.  (Don&#8217;t forget to make note of the failure.)</p>
+<p><!--
+Armin "warned
+us":http://twitter.com/mitsuhiko/status/240454487490326528 about it.  Heroku
+advises it as a "best
+practice":https://devcenter.heroku.com/articles/python-pip#best-practices.
+And Python deployment talks "tell you the
+same":http://carljm.github.com/tamingdeps/#11.
+--></p>
 </div>
 
 
-<div class="flattr-reminder no-print">
-If you find this post useful, please <a class="flattr-link" href="https://flattr.com/thing/882478/"><img src="/img/flattrblack.png" width="43" height="10" /></a> it.
-</div>
-
-
-<hr style="margin-top: 16px; margin-bottom: 16px" />
-<div id="disqus_thread"></div>
-<script type="text/javascript">
-  var disqus_identifier = 'pin-your-packages';
-  var disqus_url = 'http://nvie.com/posts/pin-your-packages/';
-  var disqus_shortname = 'nvie';
-  var disqus_title = "Pin Your Packages";
-  (function() {
-   var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-   dsq.src = 'http://nvie.disqus.com/embed.js';
-   (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-  })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=nvie">comments powered by Disqus.</a></noscript>
 
 		</div>
 		<div id="footer">
@@ -175,14 +145,6 @@ If you find this post useful, please <a class="flattr-link" href="https://flattr
 		</div>
 
 		
-		
-		<script type="text/javascript">
-			(function () {
-			var s = document.createElement('script'); s.async = true;
-			s.src = 'http://disqus.com/forums/nvie/count.js';
-			(document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-			}());
-		</script>
 		
 	</body>
 </html>

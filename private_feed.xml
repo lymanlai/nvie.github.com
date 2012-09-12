@@ -2,97 +2,13 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <id>http://nvie.com/</id>
   <title>nvie.com</title>
-  <updated>2012-09-11T22:00:00Z</updated>
+  <updated>2012-09-08T22:00:00Z</updated>
   <link rel="alternate" href="http://nvie.com/"/>
   <link rel="self" href="http://feeds.feedburner.com/nvie"/>
   <author>
     <name>Vincent Driessen</name>
     <uri>http://nvie.com/about</uri>
   </author>
-  <entry>
-    <id>tag:nvie.com,2012-09-12:/posts/pin-your-packages/</id>
-    <title type="html">Pin Your Packages</title>
-    <published>2012-09-11T22:00:00Z</published>
-    <updated>2012-09-11T22:00:00Z</updated>
-    <link rel="alternate" href="http://nvie.com/posts/pin-your-packages/"/>
-    <content type="html">&lt;p&gt;In building your Python application and its dependencies for production, you
-want to make sure that your builds are predictable and deterministic.
-Therefore, always pin your dependencies.&lt;/p&gt;
-&lt;p&gt;A few best practices.&lt;/p&gt;
-&lt;h3&gt;Pin Explicitly&lt;/h3&gt;
-&lt;p&gt;Don&amp;#x2019;t ever use these styles in &lt;code&gt;requirements.txt&lt;/code&gt;:&lt;/p&gt;
-&lt;ul&gt;
-	&lt;li&gt;&lt;code&gt;lxml&lt;/code&gt;&lt;/li&gt;
-	&lt;li&gt;&lt;code&gt;lxml&amp;gt;=2.2.0&lt;/code&gt;&lt;/li&gt;
-	&lt;li&gt;&lt;code&gt;lxml&amp;gt;=2.2.0,&amp;lt;2.3.0&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Instead, pin them:&lt;/p&gt;
-&lt;ul&gt;
-	&lt;li&gt;&lt;code&gt;lxml==2.3.4&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;If you don&amp;#x2019;t, you cannot know what you&amp;#x2019;ll get when you run &lt;code&gt;pip install&lt;/code&gt;.
-Even if you rebuild the env every time, you can&amp;#x2019;t predict it.  The outcome
-relies on a) what&amp;#x2019;s currently installed, and b) what&amp;#x2019;s the current version on
-PyPI.&lt;/p&gt;
-&lt;p&gt;Your development, staging, and production environments (not to mention your
-team members&amp;#x2019; ones) will eventually run out of sync.  Worse even, this cannot
-be fixed by rerunning &lt;code&gt;pip install&lt;/code&gt;.  It&amp;#x2019;s waiting for bad things to happen in
-production.&lt;/p&gt;
-&lt;p&gt;The only way of making your builds deterministic, is if you pin &lt;em&gt;every&lt;/em&gt; single
-package dependency.&lt;/p&gt;
-&lt;p&gt;Does this mean you&amp;#x2019;ll miss out on automatic minor releases?  Well, yes, you
-will.  But think of it.  It&amp;#x2019;s impossible to distinguish between a new release
-that fixes bugs, or a new release that introduced bugs.  The former will
-improve your code, while the latter &lt;a href="http://twitter.com/mitsuhiko/status/240454487490326528"&gt;may
-break&lt;/a&gt; it.  You are
-leaving it up to coincidence now.  There is only one way to retake control:&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;&lt;em&gt;Pin every dependency.&lt;/em&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h3&gt;Check for Updates Automatically&lt;/h3&gt;
-&lt;p&gt;Pinning implies explicitly upgrading.  Therefore, you should check
-dependencies automatically, at regular intervals.  I wrote a small tool that
-can help with this: &lt;a href="https://github.com/nvie/pip-review"&gt;pip-review&lt;/a&gt;.  It will
-check for available updates of your pinned packages on PyPI, and report about
-them when available:&lt;/p&gt;
-&lt;pre&gt;&lt;code class="language-console"&gt;
-$ pip-review
-requests==0.14.0 available (you have 0.13.2)
-redis==2.6.2 available (you have 2.4.9)
-rq==0.3.2 available (you have 0.3.0)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;It&amp;#x2019;s advisable to pick a fixed schedule to run this.  For example, every
-monday during a weekly standup meeting with your engineering team.  Make it
-a point on the agenda.  You discuss pip-review&amp;#x2019;s output, inspect changelogs,
-or just blindly upgrade them.  But you should do it explicitly.  You have the
-chance to run with them for a while, before pushing those versions to
-production.&lt;/p&gt;
-&lt;h3&gt;Also Pin Your Dependency&amp;#x2019;s Dependencies&lt;/h3&gt;
-&lt;p&gt;For the same reasons as stated above, you should also pin dependency&amp;#x2019;s
-dependencies.  For example, don&amp;#x2019;t just pin this:&lt;/p&gt;
-&lt;pre&gt;&lt;code class="language-text"&gt;
-Flask==0.9
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;But also these:&lt;/p&gt;
-&lt;pre&gt;&lt;code class="language-text"&gt;
-Flask==0.9
-Jinja2==2.6
-Werkzeug==0.8.3
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Heroku &lt;a href="https://devcenter.heroku.com/articles/python-pip#best-practices"&gt;advises
-this&lt;/a&gt;, too.
-Always remember that Werkzeug could get updated to 0.8.4 without you noticing.
-A simple &lt;code&gt;pip install Flask&lt;/code&gt; in another env could lead to envs with different
-Werkzeug versions.&lt;/p&gt;
-&lt;p&gt;Be explicit and let &lt;code&gt;pip-review&lt;/code&gt; check for updates.&lt;/p&gt;
-&lt;h3&gt;Warning: Don&amp;#x2019;t Do This With Libraries&lt;/h3&gt;
-&lt;p&gt;Don&amp;#x2019;t pin everything when you&amp;#x2019;re writing libraries!  Otherwise, you&amp;#x2019;ll have to
-release a new version of the library whenever a base dependency is released.
-It&amp;#x2019;s safe to use the bounded qualifiers there.&lt;/p&gt;</content>
-    <summary type="html">&lt;p&gt;In building your Python application and its dependencies for production, you
-want to make sure that your builds are predictable and deterministic.
-Therefore, always pin your dependencies.&lt;/p&gt;</summary>
-  </entry>
   <entry>
     <id>tag:nvie.com,2012-09-09:/posts/open-sourcing-is-the-ultimate-isolation/</id>
     <title type="html">Open Sourcing: the Ultimate Isolation</title>
