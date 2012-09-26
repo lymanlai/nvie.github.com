@@ -104,11 +104,11 @@ package dependency (even the dependency’s dependencies).</p>
 <p><strong><span class="caps">WARNING</span>:</strong> don’t pin by default when you’re building libraries!  Only use
     pinning for end products.</p>
 </blockquote>
-<p>The biggest pain point for people not to pin everything explicitly is that
-they don’t benefit from updates that way.  Well, yes, you won’t.  But think of
-it.  It’s impossible to distinguish between a new release that fixes bugs, or
-one that introduced them.  You are leaving it up to coincidence.  There is
-only one way to retake control: <em>pin every dependency</em>.</p>
+<p>The biggest complaint from folks regarding explicit pinning is that you won’t
+benefit from updates that way.  Well, yes, you won’t.  But think of it.  It’s
+impossible to distinguish between a new release that fixes bugs, or one that
+introduced them.  You are leaving it up to coincidence.  There is only one way
+to retake control: <em>pin every dependency</em>.</p>
 <h3>Check for Updates Automatically</h3>
 <p>So: we want to pin packages, but don’t want to let them become outdated.  The
 solution: use a tool that can check for updates.  This is exactly what I built
@@ -116,8 +116,8 @@ solution: use a tool that can check for updates.  This is exactly what I built
 <p>pip-tools is the collective name for two tools: <code>pip-review</code> + <code>pip-dump</code></p>
 <p><img src="/img/2012/09/pip-tools.png" class="center" alt=""></p>
 <h4>pip-review</h4>
-<p>It will check for available updates of all packages currently installed
-packages in your environment, and report about them when available:</p>
+<p>It will check for available updates of all packages currently installed in
+your environment, and report about them when available:</p>
 <pre><code class="language-console"><span class="gp">$</span> pip-review
 <span class="go">requests==0.14.0 available (you have 0.13.2)</span>
 <span class="go">redis==2.6.2 available (you have 2.4.9)</span>

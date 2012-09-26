@@ -44,11 +44,11 @@ package dependency (even the dependency&amp;#x2019;s dependencies).&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;&lt;span class="caps"&gt;WARNING&lt;/span&gt;:&lt;/strong&gt; don&amp;#x2019;t pin by default when you&amp;#x2019;re building libraries!  Only use
     pinning for end products.&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;The biggest pain point for people not to pin everything explicitly is that
-they don&amp;#x2019;t benefit from updates that way.  Well, yes, you won&amp;#x2019;t.  But think of
-it.  It&amp;#x2019;s impossible to distinguish between a new release that fixes bugs, or
-one that introduced them.  You are leaving it up to coincidence.  There is
-only one way to retake control: &lt;em&gt;pin every dependency&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;The biggest complaint from folks regarding explicit pinning is that you won&amp;#x2019;t
+benefit from updates that way.  Well, yes, you won&amp;#x2019;t.  But think of it.  It&amp;#x2019;s
+impossible to distinguish between a new release that fixes bugs, or one that
+introduced them.  You are leaving it up to coincidence.  There is only one way
+to retake control: &lt;em&gt;pin every dependency&lt;/em&gt;.&lt;/p&gt;
 &lt;h3&gt;Check for Updates Automatically&lt;/h3&gt;
 &lt;p&gt;So: we want to pin packages, but don&amp;#x2019;t want to let them become outdated.  The
 solution: use a tool that can check for updates.  This is exactly what I built
@@ -56,8 +56,8 @@ solution: use a tool that can check for updates.  This is exactly what I built
 &lt;p&gt;pip-tools is the collective name for two tools: &lt;code&gt;pip-review&lt;/code&gt; + &lt;code&gt;pip-dump&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;&lt;img src="http://nvie.com/img/2012/09/pip-tools.png" class="center" alt=""&gt;&lt;/p&gt;
 &lt;h4&gt;pip-review&lt;/h4&gt;
-&lt;p&gt;It will check for available updates of all packages currently installed
-packages in your environment, and report about them when available:&lt;/p&gt;
+&lt;p&gt;It will check for available updates of all packages currently installed in
+your environment, and report about them when available:&lt;/p&gt;
 &lt;pre&gt;&lt;code class="language-console"&gt;
 $ pip-review
 requests==0.14.0 available (you have 0.13.2)
