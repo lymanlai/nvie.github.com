@@ -2,13 +2,145 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <id>http://nvie.com/</id>
   <title>nvie.com</title>
-  <updated>2012-09-08T22:00:00Z</updated>
+  <updated>2012-09-25T22:00:00Z</updated>
   <link rel="alternate" href="http://nvie.com/"/>
   <link rel="self" href="http://feeds.feedburner.com/nvie"/>
   <author>
     <name>Vincent Driessen</name>
     <uri>http://nvie.com/about</uri>
   </author>
+  <entry>
+    <id>tag:nvie.com,2012-09-26:/posts/pin-your-packages/</id>
+    <title type="html">Pin Your Packages</title>
+    <published>2012-09-25T22:00:00Z</published>
+    <updated>2012-09-25T22:00:00Z</updated>
+    <link rel="alternate" href="http://nvie.com/posts/pin-your-packages/"/>
+    <content type="html">&lt;p&gt;&lt;strong&gt;tl;dr&lt;/strong&gt; Be explicit, pin all your dependencies, and let
+&lt;a href="http://github.com/nvie/pip-tools"&gt;pip-tools&lt;/a&gt; keep them fresh.&lt;/p&gt;
+&lt;p&gt;In building your Python application and its dependencies for production, you
+want to make sure that your builds are predictable and deterministic.
+Therefore, always pin your dependencies.&lt;/p&gt;
+&lt;h3&gt;Pin Explicitly&lt;/h3&gt;
+&lt;p&gt;Don&amp;#x2019;t ever use these styles in &lt;code&gt;requirements.txt&lt;/code&gt;:&lt;/p&gt;
+&lt;ul&gt;
+	&lt;li&gt;&lt;code&gt;lxml&lt;/code&gt;&lt;/li&gt;
+	&lt;li&gt;&lt;code&gt;lxml&amp;gt;=2.2.0&lt;/code&gt;&lt;/li&gt;
+	&lt;li&gt;&lt;code&gt;lxml&amp;gt;=2.2.0,&amp;lt;2.3.0&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Instead, pin them:&lt;/p&gt;
+&lt;ul&gt;
+	&lt;li&gt;&lt;code&gt;lxml==2.3.4&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If you don&amp;#x2019;t, you can never know what you&amp;#x2019;ll get when you run &lt;code&gt;pip install&lt;/code&gt;.
+Even if you rebuild the env every time, you still can&amp;#x2019;t predict it.  The
+outcome relies on a) what&amp;#x2019;s currently installed, and b) what&amp;#x2019;s the current
+version on PyPI.&lt;/p&gt;
+&lt;p&gt;Eventually, all of your environments, and those of your team members, will run
+out of sync.  Worse even, this cannot be fixed by rerunning &lt;code&gt;pip install&lt;/code&gt;.
+It&amp;#x2019;s just waiting for bad things to happen in production.&lt;/p&gt;
+&lt;p&gt;The only way of making your builds deterministic, is if you pin &lt;em&gt;every&lt;/em&gt; single
+package dependency (even the dependency&amp;#x2019;s dependencies).&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;&lt;span class="caps"&gt;WARNING&lt;/span&gt;:&lt;/strong&gt; don&amp;#x2019;t pin by default when you&amp;#x2019;re building libraries!  Only use
+    pinning for end products.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;The biggest pain point for people not to pin everything explicitly is that
+they don&amp;#x2019;t benefit from updates that way.  Well, yes, you won&amp;#x2019;t.  But think of
+it.  It&amp;#x2019;s impossible to distinguish between a new release that fixes bugs, or
+one that introduced them.  You are leaving it up to coincidence.  There is
+only one way to retake control: &lt;em&gt;pin every dependency&lt;/em&gt;.&lt;/p&gt;
+&lt;h3&gt;Check for Updates Automatically&lt;/h3&gt;
+&lt;p&gt;So: we want to pin packages, but don&amp;#x2019;t want to let them become outdated.  The
+solution: use a tool that can check for updates.  This is exactly what I built
+&lt;a href="https://github.com/nvie/pip-tools"&gt;pip-tools&lt;/a&gt; for.&lt;/p&gt;
+&lt;p&gt;pip-tools is the collective name for two tools: &lt;code&gt;pip-review&lt;/code&gt; + &lt;code&gt;pip-dump&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="http://nvie.com/img/2012/09/pip-tools.png" class="center" alt=""&gt;&lt;/p&gt;
+&lt;h4&gt;pip-review&lt;/h4&gt;
+&lt;p&gt;It will check for available updates of all packages currently installed
+packages in your environment, and report about them when available:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-console"&gt;
+$ pip-review
+requests==0.14.0 available (you have 0.13.2)
+redis==2.6.2 available (you have 2.4.9)
+rq==0.3.2 available (you have 0.3.0)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;You can also install them automatically:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-console"&gt;
+$ pip-review --auto
+... &amp;lt;pip install output&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;or interactively decide whether you want to install each package:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-console"&gt;
+$ pip-review --interactive
+requests==0.14.0 available (you have 0.13.2)
+Upgrade now? [Y]es, [N]o, [A]ll, [Q]uit y
+... &amp;lt;pip install output&amp;gt;
+redis==2.6.2 available (you have 2.4.9)
+Upgrade now? [Y]es, [N]o, [A]ll, [Q]uit n
+rq==0.3.2 available (you have 0.3.0)
+Upgrade now? [Y]es, [N]o, [A]ll, [Q]uit y
+... &amp;lt;pip install output&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;It&amp;#x2019;s advisable to pick a fixed schedule to run &lt;code&gt;pip-review&lt;/code&gt;.  For example,
+every monday during a weekly standup meeting with your engineering team.  Make
+it a point on the agenda.  You discuss &lt;code&gt;pip-review&lt;/code&gt;&amp;#x2019;s output, inspect
+changelogs, or just blindly upgrade them.  The important part is that you do
+it explicitly.  You have the chance to run with the upgraded versions for
+a while in a development environment, before pushing those versions to
+production.&lt;/p&gt;
+&lt;h4&gt;pip-dump&lt;/h4&gt;
+&lt;p&gt;Whereas &lt;code&gt;pip-review&lt;/code&gt; solves the problem of how to check for updates of pinned
+packages, &lt;code&gt;pip-dump&lt;/code&gt; focuses on the problem of how to dump those definitions
+into requirements files, managed under version control.&lt;/p&gt;
+&lt;p&gt;Typically, in Python apps, you include a &lt;code&gt;requirements.txt&lt;/code&gt; file in the root
+of your project directory, and you run &lt;code&gt;pip freeze &amp;gt; requirements.txt&lt;/code&gt;
+periodically.  While this works for simple projects, this doesn&amp;#x2019;t scale.  Some
+packages are installed for development, or personal, purposes only and you
+don&amp;#x2019;t want to include those in &lt;code&gt;requirements.txt&lt;/code&gt;, going to production, or
+visible to your other team members.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;pip-dump&lt;/code&gt; provides a smarter way to dump requirements.  It understands the
+convention of separating requirements into multiple files, following the
+naming convention:&lt;/p&gt;
+&lt;ul&gt;
+	&lt;li&gt;
+&lt;code&gt;requirements.txt&lt;/code&gt; is the main (and default) requirements file;&lt;/li&gt;
+	&lt;li&gt;
+&lt;code&gt;dev-requirements.txt&lt;/code&gt;, or &lt;code&gt;test-requirements.txt&lt;/code&gt;, or actually,
+  &lt;code&gt;*requirements.txt&lt;/code&gt;, are secundary dependencies.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;When you have a &lt;code&gt;requirements.txt&lt;/code&gt; and &lt;code&gt;dev-requirements.txt&lt;/code&gt; file in your
+project, with the following content:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-text"&gt;
+# requirements.txt
+Flask==0.9
+
+# dev-requirements.txt
+ipython
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then simply running &lt;code&gt;pip-dump&lt;/code&gt; will result in the following output:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-text"&gt;
+# requirements.txt
+Flask==0.9
+Jinja2==2.6
+Werkzeug==0.8.3
+
+# dev-requirements.txt
+ipython==0.13
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;It keeps the files sorted for tidiness, and to reduce the chance of merge
+conflicts in version control.&lt;/p&gt;
+&lt;p&gt;You can even put packages in an optional file called &lt;code&gt;.pipignore&lt;/code&gt;.  This is
+useful if you want to keep some packages installed in your local environment,
+but don&amp;#x2019;t want to have them reflected in your requirements files.&lt;/p&gt;
+&lt;h3&gt;Contributing&lt;/h3&gt;
+&lt;p&gt;This stuff is all pretty beta.  I&amp;#x2019;m using it to manage a few client projects
+myself, and I&amp;#x2019;m happy with it.  Still, there must be edge cases that aren&amp;#x2019;t
+covered by this yet.  If so, please tell me.  Or &lt;a href="http://github.com/nvie/pip-tools"&gt;fork the project on
+GitHub&lt;/a&gt; and submit a pull request.&lt;/p&gt;</content>
+    <summary type="html">&lt;p&gt;In building your Python application and its dependencies for production,
+you want to make sure that your builds are predictable and deterministic.
+Therefore, always pin your dependencies.&lt;/p&gt;</summary>
+  </entry>
   <entry>
     <id>tag:nvie.com,2012-09-09:/posts/open-sourcing-is-the-ultimate-isolation/</id>
     <title type="html">Open Sourcing: the Ultimate Isolation</title>

@@ -1,0 +1,235 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+	<head>
+		<meta charset="utf-8"/>
+		<title>Pin Your Packages &raquo; nvie.com</title>
+		<link href='http://fonts.googleapis.com/css?family=Droid+Sans+Mono' rel='stylesheet' type='text/css'/>
+		<link rel="stylesheet" type="text/css" href="/css/style.css" />
+		<link rel="stylesheet" type="text/css" href="/css/syntax.css" />
+		<link rel="stylesheet" type="text/css" href="/css/fontface.css" />
+		<meta name="viewport" content="width=700, user-scalable=yes, maximum-scale=1.5" />
+		<link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="/css/mobile.css" type="text/css" /> 
+		<link rel="stylesheet" media="only screen and (max-device-width: 1024px)" href="/css/mobile.css" type="text/css" /> 
+		<link rel="stylesheet" media="print" type="text/css" href="/css/print.css" />
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+		<script type="text/javascript" src="/js/relatize_date.js"></script>
+		
+		<script type="text/javascript" src="/js/site.js"></script>
+		<script type="text/javascript" src="/js/defeatthefout.js"></script>
+		<meta name="generator" content="nanoc"/>
+		<meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1"/>
+		<link href="/img/favicon.ico" rel="shortcut icon" type="image/x-icon" /> 
+		<link href="/img/icon.png" rel="apple-touch-icon" /> 
+		<link rel="alternate" type="application/atom+xml" href="http://feeds.feedburner.com/nvie" />
+
+        <script type="text/javascript" src="//use.typekit.net/nge1fhs.js"></script>
+        <script type="text/javascript">try{Typekit.load();}catch(e){}</script></script></script>
+
+		
+		
+		<script type="text/javascript"> 
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+		</script> 
+		<script type="text/javascript"> 
+		var pageTracker = _gat._getTracker("UA-7780973-1");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+		</script>
+		
+
+        <script type="text/javascript">
+        /* <![CDATA[ */
+            (function() {
+                var s = document.createElement('script'), t = document.getElementsByTagName('script')[0];
+                s.type = 'text/javascript';
+                s.async = true;
+                s.src = 'http://api.flattr.com/js/0.6/load.js?mode=auto';
+                t.parentNode.insertBefore(s, t);
+            })();
+        /* ]]> */</script>
+	</head>
+	<body>
+		<div id="header">
+			<h1><a href="/"><span id="nvie">nvie</span><span id="dot">.</span><span id="ext">com</span></a></h1>
+			<ul>
+                <li id="home" ><a href="/">Home</a></li>
+                <li id="posts"  class='current'><a href="/posts/">Posts</a></li>
+                
+                <li id="about" ><a href="/about/">About me</a></li>
+			</ul>
+        </div>
+		<div id="actionbox" style="display: none">
+            <div id="rss"><a href="http://feeds.feedburner.com/nvie"><img src="/img/rss.png" alt="Subscribe" title="Subscribe" width="16" height="16" /></a></div>
+            <div id="tweet"><a href="http://twitter.com/share?url=http://nvie.com/posts/pin-your-packages/&via=nvie&text=Pin%20Your%20Packages"><img src='/img/twitter.png' width="16" height="16" alt="Tweet this!" title="Tweet this!" /></a></div>
+
+            <!-- Ad -->
+            <div id="influads_block" class="influads_block"> </div>
+            <script type="text/javascript">(function(){ var acc =   "acc_535d576_pub";var st ="css";var or= "130";var e=document.getElementsByTagName("script")[0];var d=document.createElement("script");d.src=('https:' == document.location.protocol ?'https://' : 'http://') +"engine.influads.com/show/"+or+"/"+st+"/"+acc;d.type="text/javascript"; d.async=true; d.defer=true; e.parentNode.insertBefore(d,e);})();</script>
+		</div>
+		<div id="main">
+			<div id="post">
+    
+<div class="flattr-quick no-print"><a class="FlattrButton" style="display:none;" href="http://nvie.com/posts/pin-your-packages/"></a></div>
+<h1 style="clear: left">Pin Your Packages</h1>
+
+<p id="permalink" class="print-only">http://nvie.com/posts/pin-your-packages/</p>
+<p class="no-print created_at dateline">Published: <span class="reldate">September 26, 2012</span></p><p class="print-only created_at dateline">Published: <span>September 26, 2012</span></p>
+<p><strong>tl;dr</strong> Be explicit, pin all your dependencies, and let
+<a href="http://github.com/nvie/pip-tools">pip-tools</a> keep them fresh.</p>
+<p>In building your Python application and its dependencies for production, you
+want to make sure that your builds are predictable and deterministic.
+Therefore, always pin your dependencies.</p>
+<h3>Pin Explicitly</h3>
+<p>Don’t ever use these styles in <code>requirements.txt</code>:</p>
+<ul>
+<li><code>lxml</code></li>
+	<li><code>lxml&gt;=2.2.0</code></li>
+	<li><code>lxml&gt;=2.2.0,&lt;2.3.0</code></li>
+</ul><p>Instead, pin them:</p>
+<ul>
+<li><code>lxml==2.3.4</code></li>
+</ul><p>If you don’t, you can never know what you’ll get when you run <code>pip install</code>.
+Even if you rebuild the env every time, you still can’t predict it.  The
+outcome relies on a) what’s currently installed, and b) what’s the current
+version on PyPI.</p>
+<p>Eventually, all of your environments, and those of your team members, will run
+out of sync.  Worse even, this cannot be fixed by rerunning <code>pip install</code>.
+It’s just waiting for bad things to happen in production.</p>
+<p>The only way of making your builds deterministic, is if you pin <em>every</em> single
+package dependency (even the dependency’s dependencies).</p>
+<blockquote>
+<p><strong><span class="caps">WARNING</span>:</strong> don’t pin by default when you’re building libraries!  Only use
+    pinning for end products.</p>
+</blockquote>
+<p>The biggest pain point for people not to pin everything explicitly is that
+they don’t benefit from updates that way.  Well, yes, you won’t.  But think of
+it.  It’s impossible to distinguish between a new release that fixes bugs, or
+one that introduced them.  You are leaving it up to coincidence.  There is
+only one way to retake control: <em>pin every dependency</em>.</p>
+<h3>Check for Updates Automatically</h3>
+<p>So: we want to pin packages, but don’t want to let them become outdated.  The
+solution: use a tool that can check for updates.  This is exactly what I built
+<a href="https://github.com/nvie/pip-tools">pip-tools</a> for.</p>
+<p>pip-tools is the collective name for two tools: <code>pip-review</code> + <code>pip-dump</code></p>
+<p><img src="/img/2012/09/pip-tools.png" class="center" alt=""></p>
+<h4>pip-review</h4>
+<p>It will check for available updates of all packages currently installed
+packages in your environment, and report about them when available:</p>
+<pre><code class="language-console"><span class="gp">$</span> pip-review
+<span class="go">requests==0.14.0 available (you have 0.13.2)</span>
+<span class="go">redis==2.6.2 available (you have 2.4.9)</span>
+<span class="go">rq==0.3.2 available (you have 0.3.0)</span></code></pre>
+<p>You can also install them automatically:</p>
+<pre><code class="language-console"><span class="gp">$</span> pip-review --auto
+<span class="go">... &lt;pip install output&gt;</span></code></pre>
+<p>or interactively decide whether you want to install each package:</p>
+<pre><code class="language-console"><span class="gp">$</span> pip-review --interactive
+<span class="go">requests==0.14.0 available (you have 0.13.2)</span>
+<span class="go">Upgrade now? [Y]es, [N]o, [A]ll, [Q]uit y</span>
+<span class="go">... &lt;pip install output&gt;</span>
+<span class="go">redis==2.6.2 available (you have 2.4.9)</span>
+<span class="go">Upgrade now? [Y]es, [N]o, [A]ll, [Q]uit n</span>
+<span class="go">rq==0.3.2 available (you have 0.3.0)</span>
+<span class="go">Upgrade now? [Y]es, [N]o, [A]ll, [Q]uit y</span>
+<span class="go">... &lt;pip install output&gt;</span></code></pre>
+<p>It’s advisable to pick a fixed schedule to run <code>pip-review</code>.  For example,
+every monday during a weekly standup meeting with your engineering team.  Make
+it a point on the agenda.  You discuss <code>pip-review</code>’s output, inspect
+changelogs, or just blindly upgrade them.  The important part is that you do
+it explicitly.  You have the chance to run with the upgraded versions for
+a while in a development environment, before pushing those versions to
+production.</p>
+<h4>pip-dump</h4>
+<p>Whereas <code>pip-review</code> solves the problem of how to check for updates of pinned
+packages, <code>pip-dump</code> focuses on the problem of how to dump those definitions
+into requirements files, managed under version control.</p>
+<p>Typically, in Python apps, you include a <code>requirements.txt</code> file in the root
+of your project directory, and you run <code>pip freeze &gt; requirements.txt</code>
+periodically.  While this works for simple projects, this doesn’t scale.  Some
+packages are installed for development, or personal, purposes only and you
+don’t want to include those in <code>requirements.txt</code>, going to production, or
+visible to your other team members.</p>
+<p><code>pip-dump</code> provides a smarter way to dump requirements.  It understands the
+convention of separating requirements into multiple files, following the
+naming convention:</p>
+<ul>
+<li>
+<code>requirements.txt</code> is the main (and default) requirements file;</li>
+	<li>
+<code>dev-requirements.txt</code>, or <code>test-requirements.txt</code>, or actually,
+  <code>*requirements.txt</code>, are secundary dependencies.</li>
+</ul><p>When you have a <code>requirements.txt</code> and <code>dev-requirements.txt</code> file in your
+project, with the following content:</p>
+<pre><code class="language-text"># requirements.txt
+Flask==0.9
+
+# dev-requirements.txt
+ipython</code></pre>
+<p>Then simply running <code>pip-dump</code> will result in the following output:</p>
+<pre><code class="language-text"># requirements.txt
+Flask==0.9
+Jinja2==2.6
+Werkzeug==0.8.3
+
+# dev-requirements.txt
+ipython==0.13</code></pre>
+<p>It keeps the files sorted for tidiness, and to reduce the chance of merge
+conflicts in version control.</p>
+<p>You can even put packages in an optional file called <code>.pipignore</code>.  This is
+useful if you want to keep some packages installed in your local environment,
+but don’t want to have them reflected in your requirements files.</p>
+<h3>Contributing</h3>
+<p>This stuff is all pretty beta.  I’m using it to manage a few client projects
+myself, and I’m happy with it.  Still, there must be edge cases that aren’t
+covered by this yet.  If so, please tell me.  Or <a href="http://github.com/nvie/pip-tools">fork the project on
+GitHub</a> and submit a pull request.</p>
+</div>
+
+
+<div class="flattr-quick no-print">
+<a class="FlattrButton" style="display:none;" rev="flattr;button:compact;" href="http://nvie.com/posts/pin-your-packages/"></a>
+</div>
+
+
+<p>If you want to get in touch, I'm <a
+    href="http://twitter.com/nvie">@nvie</a> on Twitter.</p>
+
+<hr style="margin-top: 16px; margin-bottom: 16px" />
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  var disqus_identifier = 'pin-your-packages';
+  var disqus_url = 'http://nvie.com/posts/pin-your-packages/';
+  var disqus_shortname = 'nvie';
+  var disqus_title = "Pin Your Packages";
+  (function() {
+   var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+   dsq.src = 'http://nvie.disqus.com/embed.js';
+   (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=nvie">comments powered by Disqus.</a></noscript>
+
+		</div>
+		<div id="footer">
+            <p>Vincent Driessen is an independent Python software engineer and
+            consultant from the Netherlands. You may <a
+                href="http://www.3rdcloud.com">hire him</a>.
+
+            </p>
+		</div>
+
+		
+		
+		<script type="text/javascript">
+			(function () {
+			var s = document.createElement('script'); s.async = true;
+			s.src = 'http://disqus.com/forums/nvie/count.js';
+			(document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+			}());
+		</script>
+		
+	</body>
+</html>
