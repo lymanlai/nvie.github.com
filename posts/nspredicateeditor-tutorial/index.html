@@ -1,0 +1,267 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+	<head>
+		<meta charset="utf-8"/>
+		<title>NSPredicateEditor tutorial &raquo; nvie.com</title>
+		<link href='http://fonts.googleapis.com/css?family=Droid+Sans+Mono' rel='stylesheet' type='text/css'/>
+		<link rel="stylesheet" type="text/css" href="/css/style.css" />
+		<link rel="stylesheet" type="text/css" href="/css/syntax.css" />
+		<link rel="stylesheet" type="text/css" href="/css/fontface.css" />
+		<meta name="viewport" content="width=700, user-scalable=yes, maximum-scale=1.5" />
+		<link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="/css/mobile.css" type="text/css" /> 
+		<link rel="stylesheet" media="only screen and (max-device-width: 1024px)" href="/css/mobile.css" type="text/css" /> 
+		<link rel="stylesheet" media="print" type="text/css" href="/css/print.css" />
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+		<script type="text/javascript" src="/js/relatize_date.js"></script>
+		
+		<script type="text/javascript" src="/js/site.js"></script>
+		<script type="text/javascript" src="/js/defeatthefout.js"></script>
+		<meta name="generator" content="nanoc"/>
+		<meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1"/>
+		<link href="/img/favicon.ico" rel="shortcut icon" type="image/x-icon" /> 
+		<link href="/img/icon.png" rel="apple-touch-icon" /> 
+		<link rel="alternate" type="application/atom+xml" href="http://feeds.feedburner.com/nvie" />
+
+        <script type="text/javascript" src="//use.typekit.net/nge1fhs.js"></script>
+        <script type="text/javascript">try{Typekit.load();}catch(e){}</script></script></script>
+	</head>
+	<body>
+		<div id="header">
+			<h1><a href="/"><span id="nvie">nvie</span><span id="dot">.</span><span id="ext">com</span></a></h1>
+			<ul>
+                <li id="home" ><a href="/">Home</a></li>
+                <li id="posts"  class='current'><a href="/posts/">Posts</a></li>
+                
+                <li id="about" ><a href="/about/">About me</a></li>
+			</ul>
+        </div>
+		<div id="actionbox" style="display: none">
+            <div id="rss"><a href="http://feeds.feedburner.com/nvie"><img src="/img/rss.png" alt="Subscribe" title="Subscribe" width="16" height="16" /></a></div>
+            <div id="tweet"><a href="http://twitter.com/share?url=http://nvie.com/posts/nspredicateeditor-tutorial/&via=nvie&text=NSPredicateEditor%20tutorial"><img src='/img/twitter.png' width="16" height="16" alt="Tweet this!" title="Tweet this!" /></a></div>
+
+            <!-- Ad -->
+            <div id="influads_block" class="influads_block"> </div>
+            <script type="text/javascript">(function(){ var acc =   "acc_535d576_pub";var st ="css";var or= "130";var e=document.getElementsByTagName("script")[0];var d=document.createElement("script");d.src=('https:' == document.location.protocol ?'https://' : 'http://') +"engine.influads.com/show/"+or+"/"+st+"/"+acc;d.type="text/javascript"; d.async=true; d.defer=true; e.parentNode.insertBefore(d,e);})();</script>
+		</div>
+		<div id="main">
+			<div id="post">
+    
+<div class="flattr-quick no-print"><a class="FlattrButton" style="display:none;" href="http://nvie.com/posts/nspredicateeditor-tutorial/"></a></div>
+<h1 style="clear: left">NSPredicateEditor tutorial</h1>
+
+<p id="permalink" class="print-only">http://nvie.com/posts/nspredicateeditor-tutorial/</p>
+<p class="no-print created_at dateline">Published: <span class="reldate">June 20, 2009</span></p><p class="print-only created_at dateline">Published: <span>June 20, 2009</span></p>
+<p>Cocoa offers a nice visual editor for editing NSPredicate objects templates,
+called NSPredicateEditor. The NSPredicateEditor can be set up using code or in
+Interface Builder, which is preferable for simple use. The setup is fairly easy
+once you know how to do it. In this tutorial, we’ll be building a simple
+predicate editor example which shows the basic functionality of the predicate
+editor.</p>
+<h3>Setting up the AppDelegate</h3>
+<p>Begin by creating a new Xcode project (Cmd+Shift+N). Name your project wisely
+and create a new class in the Classes group, called AppDelegate.</p>
+<p>Switch to the header file and declare two IBOutlets for the main window and the
+sheet on which we’re going to display the editor in a few minutes. Also, add
+two IBActions called <code>-openEditor:</code> and <code>-closeEditor:</code>. Finally, add an ivar
+that holds the NSPredicate we’re going to be editing.</p>
+<p><img src="/img/2009/07/appdelegate1.png" alt=""></p>
+<p>Next, we’re going to fire up Interface Builder to build the UI. Double click on
+the MainMenu.xib file under the Resources group.</p>
+<p>Drag an NSObject object from the Library into the <span class="caps">XIB</span> and call it App Delegate.
+Hit Cmd+6 and make it a subclass of the AppDelegate class we just created.
+Then, hook it up to the delegate property of the File’s Owner.</p>
+<p class="autoalign"><img src="/img/2009/07/hookup-appdelegate.png" alt=""><img src="/img/2009/07/choose-delegate.png" alt=""></p>
+<p class="clear">Drag a new NSWindow to the <span class="caps">XIB</span>-file and call it Sheet. Make sure the
+checkbox “Visible At Launch” is deselected or the sheet will not display
+properly at runtime. Open the main window and add a NSButton and a NSTextView
+to it. To the sheet window, drag a NSPredicateEditor and a NSButton. They
+should look somewhat like this now:</p>
+<p class="autoalign"><img src="/img/2009/07/Picture-5.png" alt=""><img src="/img/2009/07/Picture-4.png" alt=""></p>
+<p>Now, we can hook up the outlets and actions as usual. Hook up the Edit
+Predicate button on the main window to <code>-openEditor:</code> and the OK button on the
+sheet window to closeEditor:. Then hook up the mainWindow and sheet outlets of
+the AppDelegate class to the respective NSWindow objects.</p>
+<p><img src="/img/2009/07/hookup-windows.png" class="center" alt=""></p>
+<h3>Configure the NSPredicateEditor</h3>
+<p>Once we have all of the connections between Xcode and Interface Builder set up,
+we can continue to configure the predicate editor itself, which is actually
+what this tutorial is all about. An NSPredicateEditor control uses a list of
+NSPredicateEditorRowTemplate objects that can handle individual (simple)
+NSPredicate objects. Combining these row templates enables the
+NSPredicateEditor to edit compound predicates. There is no limitation to the
+depth of nested compound predicates, although nesting too deep would not be
+advisable from a usability perspective.</p>
+<p>In the edit window, click a few times until the “name contains” row template is
+selected. In this row template, you define which key paths are supported.
+Supported here means two things:</p>
+<ul>
+<li>
+<strong>matching</strong>—given an existing predicate with this key path in it on the
+  left-hand side, this row template can be used to alter the predicate;</li>
+	<li>
+<strong>generation</strong>—when using the editor to create new predicates, adding a new
+  rule for this key path will generate a predicate for this key path.</li>
+</ul><p class="autoalign"><img src="/img/2009/07/Picture-10.png" alt=""><img src="/img/2009/07/Picture-13.png" alt=""></p>
+<h4>Gotcha</h4>
+<p>A small gotcha, at least one that initially put me on the wrong foot, is that
+there is quite a difference between the rows that you see design-time in
+Interface Builder and the rows that are available run-time. At design-time, you
+define the NSPredicateEditorRowTemplate objects while at run-time you see
+instances of them. Hence, the number of rows at design-time is the <em>number of
+different row templates available</em>. At run-time, however, the number of rows is
+the number of <em>(simple) predicates within the compound predicate</em> (which each
+has an associated row template instance that handles it). Subtle difference.</p>
+<p>In short, in Interface Builder, <strong>create a row template for <em>each type of match</em>
+that you want to allow</strong>. Typically, this means for each data type that you want
+to support. In our example, we have the following setup:</p>
+<ul>
+<li>Row template #1 is for all string matches. Here, we have defined it for the
+  key paths “firstname”, “lastname”, “address.street” and “address.city”. They,
+  per definition, have the same  allowed operators. If we want to have an other
+  set of operators for a specific key path, we need to define a separate row
+  template for it.</li>
+	<li>Row template #2 is for date matches, i.e. our “birthdate” key path.</li>
+	<li>Row template #3 is for all integer matches, i.e. our “address.number” key
+  path.</li>
+</ul><p>The result looks like this:</p>
+<p><img src="/img/2009/07/row-templates-setup.png" class="center" alt=""></p>
+<h3>Using bindings to connect the predicate to the UI</h3>
+<p><img src="/img/2009/07/bindings.png" class="right" alt=""></p>
+<p>Next up, we simply connect both the text view from the main window and the
+predicate editor from the sheet window to the predicate key path using Cocoa
+bindings. In order to do so, select the NSPredicateEditor (first click the
+control to select the scroll view, then click again to select the inner
+NSPredicateEditor), hit Cmd+4. Then, unfold the “Value” binding and hook it up
+to the App Delegate’s “predicate” key path.</p>
+<p>Do the same for the text view in the main window, but this time hook it up to
+the “predicate.description” key path (since only strings can be displayed in a
+text view). When you do this, make sure that the text view is read-only, since
+the description property of objects should never be set.</p>
+<h3>Writing the code to wrap it all up</h3>
+<p>Finally, we have only a bit of code to write in our AppDelegate implementation,
+so let’s go:</p>
+<pre><code class="language-objc"><span class="cp">//</span>
+<span class="cp">//  AppDelegate.m</span>
+<span class="cp">//  PredicateEditorTest</span>
+<span class="cp">//</span>
+<span class="cp">//  Created by Vincent on 20-07-09.</span>
+<span class="cp">//</span>
+
+<span class="cp">#import "AppDelegate.h"</span>
+
+<span class="cp">#define DEFAULT_PREDICATE @"(firstname = 'John' AND lastname = 'Doe') " \</span>
+<span class="cp">                    @"OR birthdate &amp;gt; CAST('01/01/1985', 'NSDate') " \</span>
+<span class="cp">                    @"OR address.city = 'Chicago' " \</span>
+<span class="cp">                    @"AND address.street != 'Main Street' " \</span>
+<span class="cp">                    @"OR address.number &amp;gt; 1000"</span>
+
+<span class="k">@implementation</span> <span class="nc">AppDelegate</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">init</span>
+<span class="p">{</span>
+   <span class="n">self</span> <span class="o">=</span> <span class="p">[</span><span class="n">super</span> <span class="n">init</span><span class="p">];</span>
+   <span class="k">if</span> <span class="p">(</span><span class="n">self</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">predicate</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSPredicate</span> <span class="nl">predicateWithFormat:</span><span class="n">DEFAULT_PREDICATE</span><span class="p">]</span> <span class="n">retain</span><span class="p">];</span>
+   <span class="p">}</span>
+   <span class="k">return</span> <span class="n">self</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">dealloc</span>
+<span class="p">{</span>
+   <span class="p">[</span><span class="n">predicate</span> <span class="n">release</span><span class="p">];</span>
+   <span class="p">[</span><span class="n">super</span> <span class="n">dealloc</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">openEditor:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span>
+<span class="p">{</span>
+   <span class="p">[</span><span class="n">NSApp</span> <span class="nl">beginSheet:</span><span class="n">sheet</span>
+      <span class="nl">modalForWindow:</span><span class="n">mainWindow</span>
+      <span class="nl">modalDelegate:</span><span class="nb">nil</span>
+      <span class="nl">didEndSelector:</span><span class="nb">NULL</span>
+        <span class="nl">contextInfo:</span><span class="nb">nil</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">closeEditor:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span>
+<span class="p">{</span>
+   <span class="p">[</span><span class="n">NSApp</span> <span class="nl">endSheet:</span><span class="n">sheet</span><span class="p">];</span>
+   <span class="p">[</span><span class="n">sheet</span> <span class="nl">orderOut:</span><span class="n">sender</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="k">@end</span></code></pre>
+<p>In the <code>-init:</code> method, we initialize the AppDelegate by setting and retaining
+a reference to a rather complex default predicate. When the <span class="caps">XIB</span> is loaded at
+run-time, the textbox shows exactly this predicate and it can be edited by
+invoking the edit sheet.</p>
+<p>The actual implementation of the <code>-openEditor:</code> and <code>-closeEditor:</code> methods
+aren’t too exciting.</p>
+<h3>Downloading the source</h3>
+<p>You can download the source code for this tutorial as an Xcode project here.</p>
+<p style="text-align:center;"><a href="/files/PredicateEditorTest.zip"><img src="/img/zip.png" alt=""></a><br><a href="/files/PredicateEditorTest.zip">PredicateEditorTest.zip</a></p>
+<p>Have a blast!</p>
+</div>
+
+
+<div class="flattr-quick no-print">
+<a class="FlattrButton" style="display:none;" rev="flattr;button:compact;" href="http://nvie.com/posts/nspredicateeditor-tutorial/"></a>
+</div>
+
+
+<p>If you want to get in touch, I'm <a
+    href="http://twitter.com/nvie">@nvie</a> on Twitter.</p>
+
+		</div>
+		<div id="footer">
+            <p>Vincent Driessen is an independent Python software engineer and
+            consultant from the Netherlands. You may <a
+                href="http://www.3rdcloud.com">hire him</a>.
+
+            </p>
+		</div>
+
+		
+		
+		<script type="text/javascript"> 
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+		</script> 
+		<script type="text/javascript"> 
+		var pageTracker = _gat._getTracker("UA-7780973-1");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+		</script>
+		
+
+		
+		
+        <script type="text/javascript">
+        var _gauges = _gauges || [];
+        (function() {
+            var t   = document.createElement('script');
+            t.type  = 'text/javascript';
+            t.async = true;
+            t.id    = 'gauges-tracker';
+            t.setAttribute('data-site-id', '50693215613f5d378200002c');
+            t.src = '//secure.gaug.es/track.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(t, s);
+        })();
+        </script>
+		
+
+        <script type="text/javascript">
+        /* <![CDATA[ */
+            (function() {
+                var s = document.createElement('script'), t = document.getElementsByTagName('script')[0];
+                s.type = 'text/javascript';
+                s.async = true;
+                s.src = 'http://api.flattr.com/js/0.6/load.js?mode=auto';
+                t.parentNode.insertBefore(s, t);
+            })();
+        /* ]]> */</script>
+
+		
+		
+	</body>
+</html>

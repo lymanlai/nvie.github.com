@@ -1,0 +1,142 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+	<head>
+		<meta charset="utf-8"/>
+		<title>Building Git from scratch on Snow Leopard &raquo; nvie.com</title>
+		<link href='http://fonts.googleapis.com/css?family=Droid+Sans+Mono' rel='stylesheet' type='text/css'/>
+		<link rel="stylesheet" type="text/css" href="/css/style.css" />
+		<link rel="stylesheet" type="text/css" href="/css/syntax.css" />
+		<link rel="stylesheet" type="text/css" href="/css/fontface.css" />
+		<meta name="viewport" content="width=700, user-scalable=yes, maximum-scale=1.5" />
+		<link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="/css/mobile.css" type="text/css" /> 
+		<link rel="stylesheet" media="only screen and (max-device-width: 1024px)" href="/css/mobile.css" type="text/css" /> 
+		<link rel="stylesheet" media="print" type="text/css" href="/css/print.css" />
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+		<script type="text/javascript" src="/js/relatize_date.js"></script>
+		
+		<script type="text/javascript" src="/js/site.js"></script>
+		<script type="text/javascript" src="/js/defeatthefout.js"></script>
+		<meta name="generator" content="nanoc"/>
+		<meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1"/>
+		<link href="/img/favicon.ico" rel="shortcut icon" type="image/x-icon" /> 
+		<link href="/img/icon.png" rel="apple-touch-icon" /> 
+		<link rel="alternate" type="application/atom+xml" href="http://feeds.feedburner.com/nvie" />
+
+        <script type="text/javascript" src="//use.typekit.net/nge1fhs.js"></script>
+        <script type="text/javascript">try{Typekit.load();}catch(e){}</script></script></script>
+	</head>
+	<body>
+		<div id="header">
+			<h1><a href="/"><span id="nvie">nvie</span><span id="dot">.</span><span id="ext">com</span></a></h1>
+			<ul>
+                <li id="home" ><a href="/">Home</a></li>
+                <li id="posts"  class='current'><a href="/posts/">Posts</a></li>
+                
+                <li id="about" ><a href="/about/">About me</a></li>
+			</ul>
+        </div>
+		<div id="actionbox" style="display: none">
+            <div id="rss"><a href="http://feeds.feedburner.com/nvie"><img src="/img/rss.png" alt="Subscribe" title="Subscribe" width="16" height="16" /></a></div>
+            <div id="tweet"><a href="http://twitter.com/share?url=http://nvie.com/posts/building-git-from-scratch-on-snow-leopard/&via=nvie&text=Building%20Git%20from%20scratch%20on%20Snow%20Leopard"><img src='/img/twitter.png' width="16" height="16" alt="Tweet this!" title="Tweet this!" /></a></div>
+
+            <!-- Ad -->
+            <div id="influads_block" class="influads_block"> </div>
+            <script type="text/javascript">(function(){ var acc =   "acc_535d576_pub";var st ="css";var or= "130";var e=document.getElementsByTagName("script")[0];var d=document.createElement("script");d.src=('https:' == document.location.protocol ?'https://' : 'http://') +"engine.influads.com/show/"+or+"/"+st+"/"+acc;d.type="text/javascript"; d.async=true; d.defer=true; e.parentNode.insertBefore(d,e);})();</script>
+		</div>
+		<div id="main">
+			<div id="post">
+    
+<h1>Building Git from scratch on Snow Leopard</h1>
+
+<p id="permalink" class="print-only">http://nvie.com/posts/building-git-from-scratch-on-snow-leopard/</p>
+<p class="no-print created_at dateline">Published: <span class="reldate">January 13, 2010</span></p><p class="print-only created_at dateline">Published: <span>January 13, 2010</span></p>
+<p>When you try to build Git <a href="http://github.com/git/git">from scratch</a> on a Snow
+Leopard machine, you may have ran into the following problem:</p>
+<pre><code class="language-console"><span class="gp">$</span> git clone git://github.com/git/git.git
+<span class="go">Initialized empty Git repository in /Users/nvie/git/.git/</span>
+<span class="go">remote: Counting objects: 111619, done.</span>
+<span class="go">remote: Compressing objects: 100% (28007/28007), done.</span>
+<span class="go">remote: Total 111619 (delta 82192), reused 111264 (delta 81852)</span>
+<span class="go">Receiving objects: 100% (111619/111619), 27.60 MiB | 531 KiB/s, done.</span>
+<span class="go">Resolving deltas: 100% (82192/82192), done.</span>
+<span class="gp">$</span> <span class="nb">cd </span>git
+<span class="gp">$</span> make <span class="nv">prefix</span><span class="o">=</span>/usr/local/bin/git
+<span class="go">GIT_VERSION = 1.6.2.rc0.90.g0753</span>
+<span class="go">    * new build flags or prefix</span>
+<span class="go">    CC fast-import.o</span>
+<span class="go">    CC abspath.o</span>
+<span class="go">    :</span>
+<span class="go">    :</span>
+<span class="go">ld: warning: in /opt/local/lib/libexpat.dylib, file is not of required architecture</span>
+<span class="go">    ...</span>
+<span class="go">ld: symbol(s) not found</span>
+<span class="go">collect2: ld returned 1 exit status</span></code></pre>
+<p>Then, you have a pretty big change you are having an old Darwin ports
+(<a href="http://www.macports.org">macports</a>) collection in use which has not yet been
+upgraded to Snow Leopard’s new x64 architecture.</p>
+<p>There is, however, a simple solution to this, namely to have the <code>git</code> build
+ignore the Darwin ports, simply by adding the following parameter to the build:</p>
+<pre><code class="language-console"><span class="gp">$</span> make <span class="nv">NO_DARWIN_PORTS</span><span class="o">=</span>1 <span class="nv">prefix</span><span class="o">=</span>/usr/local/bin/git</code></pre>
+</div>
+
+
+
+<p>If you want to get in touch, I'm <a
+    href="http://twitter.com/nvie">@nvie</a> on Twitter.</p>
+
+		</div>
+		<div id="footer">
+            <p>Vincent Driessen is an independent Python software engineer and
+            consultant from the Netherlands. You may <a
+                href="http://www.3rdcloud.com">hire him</a>.
+
+            </p>
+		</div>
+
+		
+		
+		<script type="text/javascript"> 
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+		</script> 
+		<script type="text/javascript"> 
+		var pageTracker = _gat._getTracker("UA-7780973-1");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+		</script>
+		
+
+		
+		
+        <script type="text/javascript">
+        var _gauges = _gauges || [];
+        (function() {
+            var t   = document.createElement('script');
+            t.type  = 'text/javascript';
+            t.async = true;
+            t.id    = 'gauges-tracker';
+            t.setAttribute('data-site-id', '50693215613f5d378200002c');
+            t.src = '//secure.gaug.es/track.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(t, s);
+        })();
+        </script>
+		
+
+        <script type="text/javascript">
+        /* <![CDATA[ */
+            (function() {
+                var s = document.createElement('script'), t = document.getElementsByTagName('script')[0];
+                s.type = 'text/javascript';
+                s.async = true;
+                s.src = 'http://api.flattr.com/js/0.6/load.js?mode=auto';
+                t.parentNode.insertBefore(s, t);
+            })();
+        /* ]]> */</script>
+
+		
+		
+	</body>
+</html>

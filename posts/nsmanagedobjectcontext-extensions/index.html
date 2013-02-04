@@ -1,0 +1,142 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+	<head>
+		<meta charset="utf-8"/>
+		<title>NSManagedObjectContext extensions &raquo; nvie.com</title>
+		<link href='http://fonts.googleapis.com/css?family=Droid+Sans+Mono' rel='stylesheet' type='text/css'/>
+		<link rel="stylesheet" type="text/css" href="/css/style.css" />
+		<link rel="stylesheet" type="text/css" href="/css/syntax.css" />
+		<link rel="stylesheet" type="text/css" href="/css/fontface.css" />
+		<meta name="viewport" content="width=700, user-scalable=yes, maximum-scale=1.5" />
+		<link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="/css/mobile.css" type="text/css" /> 
+		<link rel="stylesheet" media="only screen and (max-device-width: 1024px)" href="/css/mobile.css" type="text/css" /> 
+		<link rel="stylesheet" media="print" type="text/css" href="/css/print.css" />
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+		<script type="text/javascript" src="/js/relatize_date.js"></script>
+		
+		<script type="text/javascript" src="/js/site.js"></script>
+		<script type="text/javascript" src="/js/defeatthefout.js"></script>
+		<meta name="generator" content="nanoc"/>
+		<meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1"/>
+		<link href="/img/favicon.ico" rel="shortcut icon" type="image/x-icon" /> 
+		<link href="/img/icon.png" rel="apple-touch-icon" /> 
+		<link rel="alternate" type="application/atom+xml" href="http://feeds.feedburner.com/nvie" />
+
+        <script type="text/javascript" src="//use.typekit.net/nge1fhs.js"></script>
+        <script type="text/javascript">try{Typekit.load();}catch(e){}</script></script></script>
+	</head>
+	<body>
+		<div id="header">
+			<h1><a href="/"><span id="nvie">nvie</span><span id="dot">.</span><span id="ext">com</span></a></h1>
+			<ul>
+                <li id="home" ><a href="/">Home</a></li>
+                <li id="posts"  class='current'><a href="/posts/">Posts</a></li>
+                
+                <li id="about" ><a href="/about/">About me</a></li>
+			</ul>
+        </div>
+		<div id="actionbox" style="display: none">
+            <div id="rss"><a href="http://feeds.feedburner.com/nvie"><img src="/img/rss.png" alt="Subscribe" title="Subscribe" width="16" height="16" /></a></div>
+            <div id="tweet"><a href="http://twitter.com/share?url=http://nvie.com/posts/nsmanagedobjectcontext-extensions/&via=nvie&text=NSManagedObjectContext%20extensions"><img src='/img/twitter.png' width="16" height="16" alt="Tweet this!" title="Tweet this!" /></a></div>
+
+            <!-- Ad -->
+            <div id="influads_block" class="influads_block"> </div>
+            <script type="text/javascript">(function(){ var acc =   "acc_535d576_pub";var st ="css";var or= "130";var e=document.getElementsByTagName("script")[0];var d=document.createElement("script");d.src=('https:' == document.location.protocol ?'https://' : 'http://') +"engine.influads.com/show/"+or+"/"+st+"/"+acc;d.type="text/javascript"; d.async=true; d.defer=true; e.parentNode.insertBefore(d,e);})();</script>
+		</div>
+		<div id="main">
+			<div id="post">
+    
+<h1>NSManagedObjectContext extensions</h1>
+
+<p id="permalink" class="print-only">http://nvie.com/posts/nsmanagedobjectcontext-extensions/</p>
+<p class="no-print created_at dateline">Published: <span class="reldate">June 22, 2009</span></p><p class="print-only created_at dateline">Published: <span>June 22, 2009</span></p>
+<p>The Core Data framework rules, and its <span class="caps">API</span> is really really powerful. But
+really, why does the Core Data <span class="caps">API</span> require us to write so much boilerplate
+code? Simple things need to be simple.</p>
+<p>Why is the deletion of a managed object from the NSManagedObjectContext so
+easy:</p>
+<pre><code class="language-objc"><span class="p">[</span><span class="n">context</span> <span class="nl">deleteObject:</span><span class="n">someObject</span><span class="p">];</span></code></pre>
+<p>Compared to its creation:</p>
+<pre><code class="language-objc"><span class="p">[</span><span class="n">NSEntityDescription</span> <span class="nl">insertNewObjectForEntityForName:</span><span class="s">@"someObjectClassName"</span>
+                              <span class="nl">inManagedObjectContext:</span><span class="n">context</span><span class="p">];</span></code></pre>
+<h3>Extending NSManagedObjectContext</h3>
+<p>Add the following category on NSManagedObjectContext to all of your Core Data
+projects and your pains will be history.</p>
+<pre><code class="language-objc"><span class="k">@implementation</span> <span class="nc">NSManagedObjectContext</span><span class="nl">(NSManagedObjectContextConvenienceMethods)</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">newObject:</span><span class="p">(</span><span class="n">Class</span><span class="p">)</span><span class="nv">entity</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="p">[</span><span class="n">NSEntityDescription</span> <span class="nl">insertNewObjectForEntityForName:</span><span class="p">[</span><span class="n">entity</span> <span class="n">description</span><span class="p">]</span>
+                                        <span class="nl">inManagedObjectContext:</span><span class="n">self</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="k">@end</span></code></pre>
+<p>Now, a call to create a new object is as easy as deleting it.</p>
+<pre><code class="language-objc"><span class="p">[</span><span class="n">context</span> <span class="nl">newObject:</span><span class="p">[</span><span class="n">someEntity</span> <span class="n">class</span><span class="p">]];</span></code></pre>
+<h3>Further enhancements of NSManagedObject</h3>
+<p>Matt Gallagher has written an
+<a href="http://cocoawithlove.com/2008/03/core-data-one-line-fetch.html">excellent article</a>
+about how to further enhance NSManagedObject for adding simple, one-line fetch
+support. Be sure to check it out.</p>
+</div>
+
+
+
+<p>If you want to get in touch, I'm <a
+    href="http://twitter.com/nvie">@nvie</a> on Twitter.</p>
+
+		</div>
+		<div id="footer">
+            <p>Vincent Driessen is an independent Python software engineer and
+            consultant from the Netherlands. You may <a
+                href="http://www.3rdcloud.com">hire him</a>.
+
+            </p>
+		</div>
+
+		
+		
+		<script type="text/javascript"> 
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+		</script> 
+		<script type="text/javascript"> 
+		var pageTracker = _gat._getTracker("UA-7780973-1");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+		</script>
+		
+
+		
+		
+        <script type="text/javascript">
+        var _gauges = _gauges || [];
+        (function() {
+            var t   = document.createElement('script');
+            t.type  = 'text/javascript';
+            t.async = true;
+            t.id    = 'gauges-tracker';
+            t.setAttribute('data-site-id', '50693215613f5d378200002c');
+            t.src = '//secure.gaug.es/track.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(t, s);
+        })();
+        </script>
+		
+
+        <script type="text/javascript">
+        /* <![CDATA[ */
+            (function() {
+                var s = document.createElement('script'), t = document.getElementsByTagName('script')[0];
+                s.type = 'text/javascript';
+                s.async = true;
+                s.src = 'http://api.flattr.com/js/0.6/load.js?mode=auto';
+                t.parentNode.insertBefore(s, t);
+            })();
+        /* ]]> */</script>
+
+		
+		
+	</body>
+</html>
