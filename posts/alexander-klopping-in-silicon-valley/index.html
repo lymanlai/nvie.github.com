@@ -4,7 +4,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8"/>
-		<title>NSManagedObjectContext extensions &raquo; nvie.com</title>
+		<title>Alexander Klöpping in Silicon Valley &raquo; nvie.com</title>
 		<link href='http://fonts.googleapis.com/css?family=Droid+Sans+Mono' rel='stylesheet' type='text/css'/>
 		<link rel="stylesheet" type="text/css" href="/css/style.css" />
 		<link rel="stylesheet" type="text/css" href="/css/syntax.css" />
@@ -39,7 +39,7 @@
         </div>
 		<div id="actionbox" style="display: none">
             <div id="rss"><a href="http://feeds.feedburner.com/nvie"><img src="/img/rss.png" alt="Subscribe" title="Subscribe" width="16" height="16" /></a></div>
-            <div id="tweet"><a href="http://twitter.com/share?url=http://nvie.com/posts/nsmanagedobjectcontext-extensions/&via=nvie&text=NSManagedObjectContext%20extensions"><img src='/img/twitter.png' width="16" height="16" alt="Tweet this!" title="Tweet this!" /></a></div>
+            <div id="tweet"><a href="http://twitter.com/share?url=http://nvie.com/posts/alexander-klopping-in-silicon-valley/&via=nvie&text=Alexander%20Kl%C3%B6pping%20in%20Silicon%20Valley"><img src='/img/twitter.png' width="16" height="16" alt="Tweet this!" title="Tweet this!" /></a></div>
 
             <!-- Ad -->
             <div id="influads_block" class="influads_block"> </div>
@@ -48,37 +48,43 @@
 		<div id="main">
 			<div id="post">
     
-<h1>NSManagedObjectContext extensions</h1>
+<h1>Alexander Klöpping in Silicon Valley</h1>
 
-<p id="permalink" class="print-only">http://nvie.com/posts/nsmanagedobjectcontext-extensions/</p>
-<p class="no-print created_at dateline">Published: <span class="reldate">June 22, 2009</span></p><p class="print-only created_at dateline">Published: <span>June 22, 2009</span></p>
-<p>The Core Data framework rules, and its <span class="caps">API</span> is really really powerful. But
-really, why does the Core Data <span class="caps">API</span> require us to write so much boilerplate
-code? Simple things need to be simple.</p>
-<p>Why is the deletion of a managed object from the NSManagedObjectContext so
-easy:</p>
-<pre><code class="language-objc"><span class="p">[</span><span class="n">context</span> <span class="n">deleteObject</span><span class="o">:</span><span class="n">someObject</span><span class="p">];</span></code></pre>
-<p>Compared to its creation:</p>
-<pre><code class="language-objc"><span class="p">[</span><span class="n">NSEntityDescription</span> <span class="n">insertNewObjectForEntityForName</span><span class="o">:</span><span class="s">@"someObjectClassName"</span>
-                              <span class="nl">inManagedObjectContext:</span><span class="n">context</span><span class="p">];</span></code></pre>
-<h3>Extending NSManagedObjectContext</h3>
-<p>Add the following category on NSManagedObjectContext to all of your Core Data
-projects and your pains will be history.</p>
-<pre><code class="language-objc"><span class="k">@implementation</span> <span class="nc">NSManagedObjectContext</span><span class="nl">(NSManagedObjectContextConvenienceMethods)</span>
-
-<span class="k">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">newObject:</span><span class="p">(</span><span class="kt">Class</span><span class="p">)</span><span class="nv">entity</span> <span class="p">{</span>
-   <span class="k">return</span> <span class="p">[</span><span class="n">NSEntityDescription</span> <span class="n">insertNewObjectForEntityForName</span><span class="o">:</span><span class="p">[</span><span class="n">entity</span> <span class="n">description</span><span class="p">]</span>
-                                        <span class="nl">inManagedObjectContext:</span><span class="n">self</span><span class="p">];</span>
-<span class="p">}</span>
-
-<span class="k">@end</span></code></pre>
-<p>Now, a call to create a new object is as easy as deleting it.</p>
-<pre><code class="language-objc"><span class="p">[</span><span class="n">context</span> <span class="n">newObject</span><span class="o">:</span><span class="p">[</span><span class="n">someEntity</span> <span class="n">class</span><span class="p">]];</span></code></pre>
-<h3>Further enhancements of NSManagedObject</h3>
-<p>Matt Gallagher has written an
-<a href="http://cocoawithlove.com/2008/03/core-data-one-line-fetch.html">excellent article</a>
-about how to further enhance NSManagedObject for adding simple, one-line fetch
-support. Be sure to check it out.</p>
+<p id="permalink" class="print-only">http://nvie.com/posts/alexander-klopping-in-silicon-valley/</p>
+<p class="no-print created_at dateline">Published: <span class="reldate">May 07, 2013</span></p><p class="print-only created_at dateline">Published: <span>May 07, 2013</span></p>
+<p>Over the last three weeks, the Dutch broadcaster <a href="http://www.vara.nl"><span class="caps">VARA</span></a> has
+been airing three special episodes of
+<a href="http://dewerelddraaitdoor.vara.nl/DWDD-University.2772.0.html"><span class="caps">DWDD</span> University</a>:
+a documentary <a href="http://www.twitter.com/AlexanderNL">Alexander Klöpping</a> made about
+Silicon Valley.</p>
+<p>The episodes can be freely watched
+<a href="http://dewerelddraaitdoor.vara.nl/DWDD-University.2772.0.html">online</a>.
+I transcribed the episodes in an attempt to make it available to the whole
+world.</p>
+<p><b>Copyright notice.</b>  I only link to the original footage from the <span class="caps">VARA</span> here,
+in order to overlay the subs.  I didn’t steal any of the content.  The subs
+are provided by myself.</p>
+<h3>Episode 1.0: The Rise</h3>
+<p>
+<script type="text/javascript" src="http://s3.amazonaws.com/s3.www.universalsubtitles.org/embed.js">
+(
+  {"base_state": {"language": "en"},
+   "video_url": "http://content10c4b.omroep.nl/7cee71f8f10b50e90595f3dddcdad400/517bdc4f/vara/tv/dewerelddraaitdoor/20130426-dwdd-univklopping1-hq.mp4"}
+)
+</script></p>
+<p>Footage is courtesy of the <a href="http://www.vara.nl/"><span class="caps">VARA</span></a>. <a href="http://dewerelddraaitdoor.vara.nl/DWDD-University.2636.0.html?&amp;tx_varamedia%5Bmediaid%5D=230201&amp;cHash=af587ea6998629d501cf36f9e5bf419f">(Original <span class="caps">URL</span>)</a></p>
+<h3>Episode 2.0: The Valley Now</h3>
+<p>
+<script type="text/javascript" src="http://s3.amazonaws.com/s3.www.universalsubtitles.org/embed.js">
+(
+  {"base_state": {"language": "en"},
+   "video_url": "http://download.omroep.nl/vara/tv/dewerelddraaitdoor/20130503-dwdd-univklopping2-hq.mp4"}
+)
+</script></p>
+<p>Footage is courtesy of the <a href="http://www.vara.nl/"><span class="caps">VARA</span></a>. <a href="http://dewerelddraaitdoor.vara.nl/Alexander-Kloepping.3006.0.html">(Original <span class="caps">URL</span>)</a></p>
+<h3>Episode 3.0: The Future</h3>
+<p>By the time you read this, episode 3.0 hasn’t aired yet. But I’ll update this
+post once it’s available, too.</p>
 </div>
 
 

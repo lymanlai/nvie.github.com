@@ -142,12 +142,12 @@ the description property of objects should never be set.</p>
 <h3>Writing the code to wrap it all up</h3>
 <p>Finally, we have only a bit of code to write in our AppDelegate implementation,
 so let’s go:</p>
-<pre><code class="language-objc"><span class="cp">//</span>
-<span class="cp">//  AppDelegate.m</span>
-<span class="cp">//  PredicateEditorTest</span>
-<span class="cp">//</span>
-<span class="cp">//  Created by Vincent on 20-07-09.</span>
-<span class="cp">//</span>
+<pre><code class="language-objc"><span class="c1">//</span>
+<span class="c1">//  AppDelegate.m</span>
+<span class="c1">//  PredicateEditorTest</span>
+<span class="c1">//</span>
+<span class="c1">//  Created by Vincent on 20-07-09.</span>
+<span class="c1">//</span>
 
 <span class="cp">#import "AppDelegate.h"</span>
 
@@ -163,7 +163,7 @@ so let’s go:</p>
 <span class="p">{</span>
    <span class="n">self</span> <span class="o">=</span> <span class="p">[</span><span class="n">super</span> <span class="n">init</span><span class="p">];</span>
    <span class="k">if</span> <span class="p">(</span><span class="n">self</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">)</span> <span class="p">{</span>
-      <span class="n">predicate</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSPredicate</span> <span class="nl">predicateWithFormat:</span><span class="n">DEFAULT_PREDICATE</span><span class="p">]</span> <span class="n">retain</span><span class="p">];</span>
+      <span class="n">predicate</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSPredicate</span> <span class="n">predicateWithFormat</span><span class="o">:</span><span class="n">DEFAULT_PREDICATE</span><span class="p">]</span> <span class="n">retain</span><span class="p">];</span>
    <span class="p">}</span>
    <span class="k">return</span> <span class="n">self</span><span class="p">;</span>
 <span class="p">}</span>
@@ -176,7 +176,7 @@ so let’s go:</p>
 
 <span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">openEditor:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span>
 <span class="p">{</span>
-   <span class="p">[</span><span class="n">NSApp</span> <span class="nl">beginSheet:</span><span class="n">sheet</span>
+   <span class="p">[</span><span class="n">NSApp</span> <span class="n">beginSheet</span><span class="o">:</span><span class="n">sheet</span>
       <span class="nl">modalForWindow:</span><span class="n">mainWindow</span>
       <span class="nl">modalDelegate:</span><span class="nb">nil</span>
       <span class="nl">didEndSelector:</span><span class="nb">NULL</span>
@@ -185,8 +185,8 @@ so let’s go:</p>
 
 <span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">closeEditor:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span>
 <span class="p">{</span>
-   <span class="p">[</span><span class="n">NSApp</span> <span class="nl">endSheet:</span><span class="n">sheet</span><span class="p">];</span>
-   <span class="p">[</span><span class="n">sheet</span> <span class="nl">orderOut:</span><span class="n">sender</span><span class="p">];</span>
+   <span class="p">[</span><span class="n">NSApp</span> <span class="n">endSheet</span><span class="o">:</span><span class="n">sheet</span><span class="p">];</span>
+   <span class="p">[</span><span class="n">sheet</span> <span class="n">orderOut</span><span class="o">:</span><span class="n">sender</span><span class="p">];</span>
 <span class="p">}</span>
 
 <span class="k">@end</span></code></pre>
