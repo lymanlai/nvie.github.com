@@ -1,0 +1,256 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+	<head>
+		<meta charset="utf-8"/>
+		<title>Better Package Management &raquo; nvie.com</title>
+		<link href='http://fonts.googleapis.com/css?family=Droid+Sans+Mono' rel='stylesheet' type='text/css'/>
+		<link rel="stylesheet" type="text/css" href="/css/style.css" />
+		<link rel="stylesheet" type="text/css" href="/css/syntax.css" />
+		<link rel="stylesheet" type="text/css" href="/css/fontface.css" />
+		<meta name="viewport" content="width=700, user-scalable=yes, maximum-scale=1.5" />
+		<link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="/css/mobile.css" type="text/css" /> 
+		<link rel="stylesheet" media="only screen and (max-device-width: 1024px)" href="/css/mobile.css" type="text/css" /> 
+		<link rel="stylesheet" media="print" type="text/css" href="/css/print.css" />
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+		<script type="text/javascript" src="/js/relatize_date.js"></script>
+		
+		<script type="text/javascript" src="/js/site.js"></script>
+		<script type="text/javascript" src="/js/defeatthefout.js"></script>
+		<meta name="generator" content="nanoc"/>
+		<meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1"/>
+		<link href="/img/favicon.ico" rel="shortcut icon" type="image/x-icon" /> 
+		<link href="/img/icon.png" rel="apple-touch-icon" /> 
+		<link rel="alternate" type="application/atom+xml" href="http://feeds.feedburner.com/nvie" />
+
+        <script type="text/javascript" src="//use.typekit.net/nge1fhs.js"></script>
+        <script type="text/javascript">try{Typekit.load();}catch(e){}</script></script></script>
+	</head>
+	<body>
+		<div id="header">
+			<h1><a href="/"><span id="nvie">nvie</span><span id="dot">.</span><span id="ext">com</span></a></h1>
+			<ul>
+                <li id="home" ><a href="/">Home</a></li>
+                <li id="posts"  class='current'><a href="/posts/">Posts</a></li>
+                
+                <li id="about" ><a href="/about/">About me</a></li>
+			</ul>
+        </div>
+		<div id="actionbox" style="display: none">
+            <div id="rss"><a href="http://feeds.feedburner.com/nvie"><img src="/img/rss.png" alt="Subscribe" title="Subscribe" width="16" height="16" /></a></div>
+            <div id="tweet"><a href="http://twitter.com/share?url=http://nvie.com/posts/better-package-management/&via=nvie&text=Better%20Package%20Management"><img src='/img/twitter.png' width="16" height="16" alt="Tweet this!" title="Tweet this!" /></a></div>
+
+            <!-- Ad -->
+            <div id="influads_block" class="influads_block"> </div>
+            <script type="text/javascript">(function(){ var acc =   "acc_535d576_pub";var st ="css";var or= "130";var e=document.getElementsByTagName("script")[0];var d=document.createElement("script");d.src=('https:' == document.location.protocol ?'https://' : 'http://') +"engine.influads.com/show/"+or+"/"+st+"/"+acc;d.type="text/javascript"; d.async=true; d.defer=true; e.parentNode.insertBefore(d,e);})();</script>
+		</div>
+		<div id="main">
+			<div id="post">
+    
+<h1>Better Package Management</h1>
+
+<p id="permalink" class="print-only">http://nvie.com/posts/better-package-management/</p>
+<p class="no-print created_at dateline">Published: <span class="reldate">May 08, 2013</span></p><p class="print-only created_at dateline">Published: <span>May 08, 2013</span></p>
+<p>You are managing your Python packages using <code>pip</code> and <code>requirements.txt</code> spec
+files already.  Maybe, you are even <a href="/posts/pin-your-packages/">pinning them</a>
+too—-that’s awesome.  But how do you keep your environments clean and fresh?</p>
+<p>Here’s what I think can be improved to the state of package management in
+Python.</p>
+<h3>Virtue 1: Declare only your top-level dependencies</h3>
+<p>Often, your project will only need a limited set of what I’ll call <em>top-level</em>
+package dependencies.  A typical example is that you’ll depend on Django or
+Flask.  But just putting those names in an <code>requirements.txt</code> file is
+inherently dangerous and will bite you at some point.  If you don’t see why,
+<a href="/posts/pin-your-packages/">read this post</a> first.</p>
+<p>So now you’re pinning them.  If your app needs Flask, this will typically be
+in your <code>requirements.txt</code> file:</p>
+<pre><code class="language-python"><span class="n">Flask</span><span class="o">==</span><span class="mf">0.9</span>
+<span class="n">Jinja2</span><span class="o">==</span><span class="mf">2.6</span>
+<span class="n">Werkzeug</span><span class="o">==</span><span class="mf">0.8</span><span class="o">.</span><span class="mi">3</span></code></pre>
+<p>Jinja2 and Werkzeug are in there, because Flask needs them.  And since you
+don’t want fate to decide which versions of Jinja2 and Werkzeug you’ll get
+when deploying, you’re wisely pinning them.</p>
+<p>The problem with this is that over time your <code>requirements.txt</code> file will
+accumulate all kinds of dependencies, and in reality, it’s not unusual that
+you’ll lose sight of which packages are still used, and which have become
+stale.</p>
+<p>The following file is the result of depending on Flask and legit.</p>
+<pre><code class="language-python"><span class="n">async</span><span class="o">==</span><span class="mf">0.6</span><span class="o">.</span><span class="mi">1</span>
+<span class="n">clint</span><span class="o">==</span><span class="mf">0.3</span><span class="o">.</span><span class="mi">1</span>
+<span class="n">Flask</span><span class="o">==</span><span class="mf">0.9</span>
+<span class="n">gitdb</span><span class="o">==</span><span class="mf">0.5</span><span class="o">.</span><span class="mi">4</span>
+<span class="n">GitPython</span><span class="o">==</span><span class="mf">0.3</span><span class="o">.</span><span class="mf">2.</span><span class="n">RC1</span>
+<span class="n">Jinja2</span><span class="o">==</span><span class="mf">2.6</span>
+<span class="n">legit</span><span class="o">==</span><span class="mf">0.1</span><span class="o">.</span><span class="mi">1</span>
+<span class="n">smmap</span><span class="o">==</span><span class="mf">0.8</span><span class="o">.</span><span class="mi">2</span>
+<span class="n">Werkzeug</span><span class="o">==</span><span class="mf">0.8</span><span class="o">.</span><span class="mi">3</span></code></pre>
+<p>Looking at this, I’d have no clue what <code>smmap</code> is, and why it’s needed in
+there.</p>
+<p>Wouldn’t it be awesome to actually have a way of expressing only your
+top-level dependencies in a file called <code>requirements.in</code>, like this?</p>
+<pre><code class="language-python"><span class="n">Flask</span><span class="o">&gt;=</span><span class="mf">0.9</span>  <span class="c"># we use 0.9 features</span>
+<span class="n">legit</span>       <span class="c"># any version will do for us</span></code></pre>
+<p>And “compiling” that to an actual <code>requirements.txt</code>:</p>
+<pre><code class="language-python"><span class="n">async</span><span class="o">==</span><span class="mf">0.6</span><span class="o">.</span><span class="mi">1</span>  <span class="c"># required by legit==0.1.1</span>
+<span class="n">clint</span><span class="o">==</span><span class="mf">0.3</span><span class="o">.</span><span class="mi">1</span>  <span class="c"># required by legit==0.1.1</span>
+<span class="n">Flask</span><span class="o">==</span><span class="mf">0.9</span>
+<span class="n">gitdb</span><span class="o">==</span><span class="mf">0.5</span><span class="o">.</span><span class="mi">4</span>  <span class="c"># required by legit==0.1.1</span>
+<span class="n">GitPython</span><span class="o">==</span><span class="mf">0.3</span><span class="o">.</span><span class="mf">2.</span><span class="n">RC1</span>  <span class="c"># required by legit==0.1.1</span>
+<span class="n">Jinja2</span><span class="o">==</span><span class="mf">2.6</span>  <span class="c"># required by Flask==0.9</span>
+<span class="n">legit</span><span class="o">==</span><span class="mf">0.1</span><span class="o">.</span><span class="mi">1</span>
+<span class="n">smmap</span><span class="o">==</span><span class="mf">0.8</span><span class="o">.</span><span class="mi">2</span>  <span class="c"># required by legit==0.1.1</span>
+<span class="n">Werkzeug</span><span class="o">==</span><span class="mf">0.8</span><span class="o">.</span><span class="mi">3</span>  <span class="c"># required by Flask==0.9</span></code></pre>
+<p>This tool exists, and is called <code>pip-compile</code>.  Check it out on the <a href="https://github.com/nvie/pip-tools/tree/future"><code>future</code>
+branch</a> of pip-tools.  I wrote
+this together with <a href="http://twitter.com/brutasse">Bruno Renié</a> over the last few
+months.</p>
+<p>Let’s elaborate on this a bit.  The <code>.in</code> file provides the file format that
+you’d <em>actually</em> would want to use and maintain as a developer, while the
+result of compilation is the file that you want to use to build deterministic
+(and thus predictable) envs.</p>
+<p>Note that there’s a fundamental difference here between “compiling” these
+<code>.in</code> files and compiling a file of source code: the result of the compilation
+itself isn’t deterministic.  This means that compiling your requirements may
+lead to a different <code>requirements.txt</code> file depending on the moment you run
+it—-because in the meantime some packages might have gotten updates in PyPI.</p>
+<p>The point is to freeze the specs.  Exactly why you were pinning your
+dependencies already.</p>
+<p>As a consequence, you should put both files under version control.  This plays
+well with <span class="caps">PAAS</span> providers like Heroku as well. The <code>.in</code> file is only used for
+your own maintenance convenience, while the <code>.txt</code> file is actually used to
+install to your env.  The difference is, it’s now generated for you.</p>
+<blockquote>
+<p><b>A Quick Note on Complex Dependencies</b><br>
+We’ve created <code>pip-compile</code> to be smart with respect to resolving complex
+dependency trees.  For example, Flask 0.9 depends on <code>Jinja2&gt;=2.4</code>.  If
+another package, say Foo, declared <code>Jinja2&lt;2.6</code>, you’ll end up having
+<code>Jinja2==2.5</code> in your compiled requirements.  It can figure this out.
+(Obviously, conflicts can occur, in which case compilation will fail.)</p>
+</blockquote>
+<h3>Virtue 2: Have your envs reflect your specs</h3>
+<p>The next step, then, would be to rebuild your actual virtualenvs by having
+them reflect <em>exactly</em> what’s in your (compiled) spec file.  Let’s replay the
+example above.</p>
+<p>Recall that we have this in our <code>requirements.in</code> file:</p>
+<pre><code class="language-python"><span class="n">Flask</span><span class="o">&gt;=</span><span class="mf">0.9</span>
+<span class="n">legit</span></code></pre>
+<p>Then we run <code>pip-compile</code>, and get:</p>
+<pre><code class="language-python"><span class="n">async</span><span class="o">==</span><span class="mf">0.6</span><span class="o">.</span><span class="mi">1</span>  <span class="c"># required by legit==0.1.1</span>
+<span class="n">clint</span><span class="o">==</span><span class="mf">0.3</span><span class="o">.</span><span class="mi">1</span>  <span class="c"># required by legit==0.1.1</span>
+<span class="n">Flask</span><span class="o">==</span><span class="mf">0.9</span>
+<span class="n">gitdb</span><span class="o">==</span><span class="mf">0.5</span><span class="o">.</span><span class="mi">4</span>  <span class="c"># required by legit==0.1.1</span>
+<span class="n">GitPython</span><span class="o">==</span><span class="mf">0.3</span><span class="o">.</span><span class="mf">2.</span><span class="n">RC1</span>  <span class="c"># required by legit==0.1.1</span>
+<span class="n">Jinja2</span><span class="o">==</span><span class="mf">2.6</span>  <span class="c"># required by Flask==0.9</span>
+<span class="n">legit</span><span class="o">==</span><span class="mf">0.1</span><span class="o">.</span><span class="mi">1</span>
+<span class="n">smmap</span><span class="o">==</span><span class="mf">0.8</span><span class="o">.</span><span class="mi">2</span>  <span class="c"># required by legit==0.1.1</span>
+<span class="n">Werkzeug</span><span class="o">==</span><span class="mf">0.8</span><span class="o">.</span><span class="mi">3</span>  <span class="c"># required by Flask==0.9</span></code></pre>
+<p>Now, to actually install that into our environment, we typically run:</p>
+<pre><code class="language-console"><span class="gp">$</span> pip install -r requirements.txt</code></pre>
+<p>But frankly, this isn’t enough.  To actually reliably mimic the spec file, the
+env might need to uninstall some packages as well. This can actually be very
+important.  Suppose you have a package that’s already installed in your env,
+say <code>requests</code>.  Your code is using it, but you forgot to add it to
+<code>requirements.txt</code>. That way, running <code>pip install -r requirements.txt</code> will
+work fine, but deploying this code will break due to an ImportError.</p>
+<p>Meet <code>pip-sync</code>. This tool will install all required packages into your env,
+but will additionally <em>uninstall</em> everything else in there. Combined with
+<code>pip-compile</code>, this makes for package management nirvana. Say you don’t need
+<code>legit</code> anymore, and want to remove it as a project dependency.</p>
+<p>First, remove that top-level dependency from the <code>.in</code> file:</p>
+<pre><code class="language-python"><span class="n">Flask</span>
+<span class="c"># legit  # comment out, or remove</span></code></pre>
+<p>Then run <code>pip-compile</code> to update the compiled spec file:</p>
+<pre><code class="language-python"><span class="n">Flask</span><span class="o">==</span><span class="mf">0.9</span>
+<span class="n">Jinja2</span><span class="o">==</span><span class="mf">2.6</span>  <span class="c"># required by Flask==0.9</span>
+<span class="n">Werkzeug</span><span class="o">==</span><span class="mf">0.8</span><span class="o">.</span><span class="mi">3</span>  <span class="c"># required by Flask==0.9</span></code></pre>
+<p>The unused dependencies are removed automatically. Now we need to sync that
+back to our actual env:</p>
+<pre><code class="language-console"><span class="gp">$</span> pip-sync
+<span class="go">Removing package async</span>
+<span class="go">Removing package clint</span>
+<span class="go">Removing package gitdb</span>
+<span class="go">Removing package GitPython</span>
+<span class="go">Removing package smmap</span></code></pre>
+<p>This will now remove legit and all it’s dependencies (unless some other
+package would depend on them still). Your virtualenv is crisp and clean.</p>
+<blockquote>
+<p><b>pip-sync is <span class="caps">WIP</span></b><br>
+The <code>pip-sync</code> tool does not exist yet. We have plans for it, and it shouldn’t
+be hard (especially not compared to the <code>pip-compile</code> tool), but <a href="https://twitter.com/nvie/status/331773823064104961">this
+thread</a> brought it back on
+my radar.</p>
+</blockquote>
+<p>I would propose <span class="caps">PAAS</span> providers to adopt the use of <code>pip-sync</code> over <code>pip
+install -r requirements.txt</code>, as environments are automatically cleaned up
+that way.</p>
+<h3>Project context and roadmap</h3>
+<p>As said, over the last few months, <a href="http://twitter.com/brutasse">Bruno Renié</a>
+and myself have been working on a better version of the <code>pip-tools</code>
+project—-one that would let us do exactly the above.  We’ve not been very
+public about it, but you might have noticed the <a href="https://github.com/nvie/pip-tools/tree/future"><code>future</code>
+branch</a>.  Basically, this would
+replace the existing <code>pip-dump</code> command by something inherently more
+manageable.</p>
+<p>I do solicit feedback on all this, so feel free to get in touch.</p>
+</div>
+
+
+
+<p>If you want to get in touch, I'm <a
+    href="http://twitter.com/nvie">@nvie</a> on Twitter.</p>
+
+		</div>
+		<div id="footer">
+            <p>Vincent Driessen is an independent Python software engineer and
+            consultant from the Netherlands. You may <a
+                href="http://www.3rdcloud.com">hire him</a>.
+
+            </p>
+		</div>
+
+		
+		
+		<script type="text/javascript"> 
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+		</script> 
+		<script type="text/javascript"> 
+		var pageTracker = _gat._getTracker("UA-7780973-1");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+		</script>
+		
+
+		
+		
+        <script type="text/javascript">
+        var _gauges = _gauges || [];
+        (function() {
+            var t   = document.createElement('script');
+            t.type  = 'text/javascript';
+            t.async = true;
+            t.id    = 'gauges-tracker';
+            t.setAttribute('data-site-id', '50693215613f5d378200002c');
+            t.src = '//secure.gaug.es/track.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(t, s);
+        })();
+        </script>
+		
+
+        <script type="text/javascript">
+        /* <![CDATA[ */
+            (function() {
+                var s = document.createElement('script'), t = document.getElementsByTagName('script')[0];
+                s.type = 'text/javascript';
+                s.async = true;
+                s.src = 'http://api.flattr.com/js/0.6/load.js?mode=auto';
+                t.parentNode.insertBefore(s, t);
+            })();
+        /* ]]> */</script>
+
+		
+		
+	</body>
+</html>

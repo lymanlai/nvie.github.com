@@ -2,13 +2,184 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <id>http://nvie.com/</id>
   <title>nvie.com</title>
-  <updated>2013-05-06T22:00:00Z</updated>
+  <updated>2013-05-07T22:00:00Z</updated>
   <link rel="alternate" href="http://nvie.com/"/>
   <link rel="self" href="http://feeds.feedburner.com/nvie"/>
   <author>
     <name>Vincent Driessen</name>
     <uri>http://nvie.com/about</uri>
   </author>
+  <entry>
+    <id>tag:nvie.com,2013-05-08:/posts/better-package-management/</id>
+    <title type="html">Better Package Management</title>
+    <published>2013-05-07T22:00:00Z</published>
+    <updated>2013-05-07T22:00:00Z</updated>
+    <link rel="alternate" href="http://nvie.com/posts/better-package-management/"/>
+    <content type="html">&lt;p&gt;You are managing your Python packages using &lt;code&gt;pip&lt;/code&gt; and &lt;code&gt;requirements.txt&lt;/code&gt; spec
+files already.  Maybe, you are even &lt;a href="http://nvie.com/posts/pin-your-packages/"&gt;pinning them&lt;/a&gt;
+too&amp;#x2014;-that&amp;#x2019;s awesome.  But how do you keep your environments clean and fresh?&lt;/p&gt;
+&lt;p&gt;Here&amp;#x2019;s what I think can be improved to the state of package management in
+Python.&lt;/p&gt;
+&lt;h3&gt;Virtue 1: Declare only your top-level dependencies&lt;/h3&gt;
+&lt;p&gt;Often, your project will only need a limited set of what I&amp;#x2019;ll call &lt;em&gt;top-level&lt;/em&gt;
+package dependencies.  A typical example is that you&amp;#x2019;ll depend on Django or
+Flask.  But just putting those names in an &lt;code&gt;requirements.txt&lt;/code&gt; file is
+inherently dangerous and will bite you at some point.  If you don&amp;#x2019;t see why,
+&lt;a href="http://nvie.com/posts/pin-your-packages/"&gt;read this post&lt;/a&gt; first.&lt;/p&gt;
+&lt;p&gt;So now you&amp;#x2019;re pinning them.  If your app needs Flask, this will typically be
+in your &lt;code&gt;requirements.txt&lt;/code&gt; file:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;
+Flask==0.9
+Jinja2==2.6
+Werkzeug==0.8.3
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Jinja2 and Werkzeug are in there, because Flask needs them.  And since you
+don&amp;#x2019;t want fate to decide which versions of Jinja2 and Werkzeug you&amp;#x2019;ll get
+when deploying, you&amp;#x2019;re wisely pinning them.&lt;/p&gt;
+&lt;p&gt;The problem with this is that over time your &lt;code&gt;requirements.txt&lt;/code&gt; file will
+accumulate all kinds of dependencies, and in reality, it&amp;#x2019;s not unusual that
+you&amp;#x2019;ll lose sight of which packages are still used, and which have become
+stale.&lt;/p&gt;
+&lt;p&gt;The following file is the result of depending on Flask and legit.&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;
+async==0.6.1
+clint==0.3.1
+Flask==0.9
+gitdb==0.5.4
+GitPython==0.3.2.RC1
+Jinja2==2.6
+legit==0.1.1
+smmap==0.8.2
+Werkzeug==0.8.3
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Looking at this, I&amp;#x2019;d have no clue what &lt;code&gt;smmap&lt;/code&gt; is, and why it&amp;#x2019;s needed in
+there.&lt;/p&gt;
+&lt;p&gt;Wouldn&amp;#x2019;t it be awesome to actually have a way of expressing only your
+top-level dependencies in a file called &lt;code&gt;requirements.in&lt;/code&gt;, like this?&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;
+Flask&amp;gt;=0.9  # we use 0.9 features
+legit       # any version will do for us
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And &amp;#x201C;compiling&amp;#x201D; that to an actual &lt;code&gt;requirements.txt&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;
+async==0.6.1  # required by legit==0.1.1
+clint==0.3.1  # required by legit==0.1.1
+Flask==0.9
+gitdb==0.5.4  # required by legit==0.1.1
+GitPython==0.3.2.RC1  # required by legit==0.1.1
+Jinja2==2.6  # required by Flask==0.9
+legit==0.1.1
+smmap==0.8.2  # required by legit==0.1.1
+Werkzeug==0.8.3  # required by Flask==0.9
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This tool exists, and is called &lt;code&gt;pip-compile&lt;/code&gt;.  Check it out on the &lt;a href="https://github.com/nvie/pip-tools/tree/future"&gt;&lt;code&gt;future&lt;/code&gt;
+branch&lt;/a&gt; of pip-tools.  I wrote
+this together with &lt;a href="http://twitter.com/brutasse"&gt;Bruno Reni&amp;#xE9;&lt;/a&gt; over the last few
+months.&lt;/p&gt;
+&lt;p&gt;Let&amp;#x2019;s elaborate on this a bit.  The &lt;code&gt;.in&lt;/code&gt; file provides the file format that
+you&amp;#x2019;d &lt;em&gt;actually&lt;/em&gt; would want to use and maintain as a developer, while the
+result of compilation is the file that you want to use to build deterministic
+(and thus predictable) envs.&lt;/p&gt;
+&lt;p&gt;Note that there&amp;#x2019;s a fundamental difference here between &amp;#x201C;compiling&amp;#x201D; these
+&lt;code&gt;.in&lt;/code&gt; files and compiling a file of source code: the result of the compilation
+itself isn&amp;#x2019;t deterministic.  This means that compiling your requirements may
+lead to a different &lt;code&gt;requirements.txt&lt;/code&gt; file depending on the moment you run
+it&amp;#x2014;-because in the meantime some packages might have gotten updates in PyPI.&lt;/p&gt;
+&lt;p&gt;The point is to freeze the specs.  Exactly why you were pinning your
+dependencies already.&lt;/p&gt;
+&lt;p&gt;As a consequence, you should put both files under version control.  This plays
+well with &lt;span class="caps"&gt;PAAS&lt;/span&gt; providers like Heroku as well. The &lt;code&gt;.in&lt;/code&gt; file is only used for
+your own maintenance convenience, while the &lt;code&gt;.txt&lt;/code&gt; file is actually used to
+install to your env.  The difference is, it&amp;#x2019;s now generated for you.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;b&gt;A Quick Note on Complex Dependencies&lt;/b&gt;&lt;br&gt;
+We&amp;#x2019;ve created &lt;code&gt;pip-compile&lt;/code&gt; to be smart with respect to resolving complex
+dependency trees.  For example, Flask 0.9 depends on &lt;code&gt;Jinja2&amp;gt;=2.4&lt;/code&gt;.  If
+another package, say Foo, declared &lt;code&gt;Jinja2&amp;lt;2.6&lt;/code&gt;, you&amp;#x2019;ll end up having
+&lt;code&gt;Jinja2==2.5&lt;/code&gt; in your compiled requirements.  It can figure this out.
+(Obviously, conflicts can occur, in which case compilation will fail.)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3&gt;Virtue 2: Have your envs reflect your specs&lt;/h3&gt;
+&lt;p&gt;The next step, then, would be to rebuild your actual virtualenvs by having
+them reflect &lt;em&gt;exactly&lt;/em&gt; what&amp;#x2019;s in your (compiled) spec file.  Let&amp;#x2019;s replay the
+example above.&lt;/p&gt;
+&lt;p&gt;Recall that we have this in our &lt;code&gt;requirements.in&lt;/code&gt; file:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;
+Flask&amp;gt;=0.9
+legit
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then we run &lt;code&gt;pip-compile&lt;/code&gt;, and get:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;
+async==0.6.1  # required by legit==0.1.1
+clint==0.3.1  # required by legit==0.1.1
+Flask==0.9
+gitdb==0.5.4  # required by legit==0.1.1
+GitPython==0.3.2.RC1  # required by legit==0.1.1
+Jinja2==2.6  # required by Flask==0.9
+legit==0.1.1
+smmap==0.8.2  # required by legit==0.1.1
+Werkzeug==0.8.3  # required by Flask==0.9
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now, to actually install that into our environment, we typically run:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-console"&gt;
+$ pip install -r requirements.txt
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;But frankly, this isn&amp;#x2019;t enough.  To actually reliably mimic the spec file, the
+env might need to uninstall some packages as well. This can actually be very
+important.  Suppose you have a package that&amp;#x2019;s already installed in your env,
+say &lt;code&gt;requests&lt;/code&gt;.  Your code is using it, but you forgot to add it to
+&lt;code&gt;requirements.txt&lt;/code&gt;. That way, running &lt;code&gt;pip install -r requirements.txt&lt;/code&gt; will
+work fine, but deploying this code will break due to an ImportError.&lt;/p&gt;
+&lt;p&gt;Meet &lt;code&gt;pip-sync&lt;/code&gt;. This tool will install all required packages into your env,
+but will additionally &lt;em&gt;uninstall&lt;/em&gt; everything else in there. Combined with
+&lt;code&gt;pip-compile&lt;/code&gt;, this makes for package management nirvana. Say you don&amp;#x2019;t need
+&lt;code&gt;legit&lt;/code&gt; anymore, and want to remove it as a project dependency.&lt;/p&gt;
+&lt;p&gt;First, remove that top-level dependency from the &lt;code&gt;.in&lt;/code&gt; file:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;
+Flask
+# legit  # comment out, or remove
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then run &lt;code&gt;pip-compile&lt;/code&gt; to update the compiled spec file:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;
+Flask==0.9
+Jinja2==2.6  # required by Flask==0.9
+Werkzeug==0.8.3  # required by Flask==0.9
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The unused dependencies are removed automatically. Now we need to sync that
+back to our actual env:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-console"&gt;
+$ pip-sync
+Removing package async
+Removing package clint
+Removing package gitdb
+Removing package GitPython
+Removing package smmap
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This will now remove legit and all it&amp;#x2019;s dependencies (unless some other
+package would depend on them still). Your virtualenv is crisp and clean.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;b&gt;pip-sync is &lt;span class="caps"&gt;WIP&lt;/span&gt;&lt;/b&gt;&lt;br&gt;
+The &lt;code&gt;pip-sync&lt;/code&gt; tool does not exist yet. We have plans for it, and it shouldn&amp;#x2019;t
+be hard (especially not compared to the &lt;code&gt;pip-compile&lt;/code&gt; tool), but &lt;a href="https://twitter.com/nvie/status/331773823064104961"&gt;this
+thread&lt;/a&gt; brought it back on
+my radar.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;I would propose &lt;span class="caps"&gt;PAAS&lt;/span&gt; providers to adopt the use of &lt;code&gt;pip-sync&lt;/code&gt; over &lt;code&gt;pip
+install -r requirements.txt&lt;/code&gt;, as environments are automatically cleaned up
+that way.&lt;/p&gt;
+&lt;h3&gt;Project context and roadmap&lt;/h3&gt;
+&lt;p&gt;As said, over the last few months, &lt;a href="http://twitter.com/brutasse"&gt;Bruno Reni&amp;#xE9;&lt;/a&gt;
+and myself have been working on a better version of the &lt;code&gt;pip-tools&lt;/code&gt;
+project&amp;#x2014;-one that would let us do exactly the above.  We&amp;#x2019;ve not been very
+public about it, but you might have noticed the &lt;a href="https://github.com/nvie/pip-tools/tree/future"&gt;&lt;code&gt;future&lt;/code&gt;
+branch&lt;/a&gt;.  Basically, this would
+replace the existing &lt;code&gt;pip-dump&lt;/code&gt; command by something inherently more
+manageable.&lt;/p&gt;
+&lt;p&gt;I do solicit feedback on all this, so feel free to get in touch.&lt;/p&gt;</content>
+    <summary type="html">&lt;p&gt;You are managing your Python packages using &lt;code&gt;pip&lt;/code&gt; and &lt;code&gt;requirements.txt&lt;/code&gt; spec
+files already.  Maybe, you are even &lt;a href="/posts/pin-your-packages/"&gt;pinning them&lt;/a&gt;
+too&amp;#8212;-that&amp;#8217;s awesome.  But how do you keep your environments clean and fresh?&lt;/p&gt;</summary>
+  </entry>
   <entry>
     <id>tag:nvie.com,2013-05-07:/posts/alexander-klopping-in-silicon-valley/</id>
     <title type="html">Alexander Klöpping in Silicon Valley</title>
