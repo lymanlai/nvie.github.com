@@ -54,7 +54,7 @@
 <p class="no-print created_at dateline">Published: <span class="reldate">May 08, 2013</span></p><p class="print-only created_at dateline">Published: <span>May 08, 2013</span></p>
 <p>You are managing your Python packages using <code>pip</code> and <code>requirements.txt</code> spec
 files already.  Maybe, you are even <a href="/posts/pin-your-packages/">pinning them</a>
-too—-that’s awesome.  But how do you keep your environments clean and fresh?</p>
+too—that’s awesome.  But how do you keep your environments clean and fresh?</p>
 <p>Here’s what I think can be improved to the state of package management in
 Python.</p>
 <h3>Virtue 1: Declare only your top-level dependencies</h3>
@@ -113,7 +113,7 @@ result of compilation is the file that you want to use to build deterministic
 <code>.in</code> files and compiling a file of source code: the result of the compilation
 itself isn’t deterministic.  This means that compiling your requirements may
 lead to a different <code>requirements.txt</code> file depending on the moment you run
-it—-because in the meantime some packages might have gotten updates in PyPI.</p>
+it—because in the meantime some packages might have gotten updates in PyPI.</p>
 <p>The point is to freeze the specs.  Exactly why you were pinning your
 dependencies already.</p>
 <p>As a consequence, you should put both files under version control.  This plays
@@ -187,7 +187,7 @@ that way.</p>
 <h3>Project context and roadmap</h3>
 <p>As said, over the last few months, <a href="http://twitter.com/brutasse">Bruno Renié</a>
 and myself have been working on a better version of the <code>pip-tools</code>
-project—-one that would let us do exactly the above.  We’ve not been very
+project—one that would let us do exactly the above.  We’ve not been very
 public about it, but you might have noticed the <a href="https://github.com/nvie/pip-tools/tree/future"><code>future</code>
 branch</a>.  Basically, this would
 replace the existing <code>pip-dump</code> command by something inherently more
