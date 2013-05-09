@@ -155,8 +155,9 @@ Removing package gitdb
 Removing package GitPython
 Removing package smmap
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;This will now remove legit and all it&amp;#x2019;s dependencies (unless some other
-package would depend on them still). Your virtualenv is crisp and clean.&lt;/p&gt;
+&lt;p&gt;This will now uninstall legit and all it&amp;#x2019;s dependencies from the virtualenv
+(unless some other package would depend on them still). Your virtualenv is
+crisp and clean.&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;&lt;b&gt;pip-sync is &lt;span class="caps"&gt;WIP&lt;/span&gt;&lt;/b&gt;&lt;br&gt;
 The &lt;code&gt;pip-sync&lt;/code&gt; tool does not exist yet. We have plans for it, and it shouldn&amp;#x2019;t
