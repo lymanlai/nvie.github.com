@@ -230,13 +230,15 @@ Silicon Valley.&lt;/p&gt;</summary>
     <id>tag:nvie.com,2012-09-26:/posts/pin-your-packages/</id>
     <title type="html">Pin Your Packages</title>
     <published>2012-09-25T22:00:00Z</published>
-    <updated>2012-09-25T22:00:00Z</updated>
+    <updated>2013-05-07T22:00:00Z</updated>
     <link rel="alternate" href="http://nvie.com/posts/pin-your-packages/"/>
     <content type="html">&lt;p&gt;&lt;strong&gt;tl;dr&lt;/strong&gt; Be explicit, pin all your dependencies, and let
 &lt;a href="http://github.com/nvie/pip-tools"&gt;pip-tools&lt;/a&gt; keep them fresh.&lt;/p&gt;
 &lt;p&gt;In building your Python application and its dependencies for production, you
 want to make sure that your builds are predictable and deterministic.
 Therefore, always pin your dependencies.&lt;/p&gt;
+&lt;p&gt;&lt;ins&gt;&lt;strong&gt;Update:&lt;/strong&gt; A newer blog post about the future of pip-tools is available too:
+&lt;a href="http://nvie.com/posts/better-package-management/"&gt;Better Package Management&lt;/a&gt;.&lt;/ins&gt;&lt;/p&gt;
 &lt;h3&gt;Pin Explicitly&lt;/h3&gt;
 &lt;p&gt;Don&amp;#x2019;t ever use these styles in &lt;code&gt;requirements.txt&lt;/code&gt;:&lt;/p&gt;
 &lt;ul&gt;
@@ -350,10 +352,10 @@ conflicts in version control.&lt;/p&gt;
 useful if you want to keep some packages installed in your local environment,
 but don&amp;#x2019;t want to have them reflected in your requirements files.&lt;/p&gt;
 &lt;h3&gt;Contributing&lt;/h3&gt;
-&lt;p&gt;This stuff is all pretty beta.  I&amp;#x2019;m using it to manage a few client projects
-myself, and I&amp;#x2019;m happy with it.  Still, there must be edge cases that aren&amp;#x2019;t
-covered by this yet.  If so, please tell me.  Or &lt;a href="http://github.com/nvie/pip-tools"&gt;fork the project on
-GitHub&lt;/a&gt; and submit a pull request.&lt;/p&gt;</content>
+&lt;p&gt;&lt;del&gt;This stuff is all pretty beta.&lt;/del&gt; &lt;ins&gt;&lt;code&gt;pip-tools&lt;/code&gt; 0.x is relied on by many already
+on a daily/weekly basis.  It&amp;#x2019;s worth noting that we&amp;#x2019;re working on &lt;a href="http://nvie.com/posts/better-package-management/"&gt;Better
+Package Management&lt;/a&gt; too, which will be the
+future of &lt;code&gt;pip-tools&lt;/code&gt;.  If you want to contribute, please shout out.&lt;/ins&gt;&lt;/p&gt;</content>
     <summary type="html">&lt;p&gt;In building your Python application and its dependencies for production,
 you want to make sure that your builds are predictable and deterministic.
 Therefore, always pin your dependencies.&lt;/p&gt;</summary>

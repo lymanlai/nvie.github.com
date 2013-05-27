@@ -52,12 +52,14 @@
 <h1 style="clear: left">Pin Your Packages</h1>
 
 <p id="permalink" class="print-only">http://nvie.com/posts/pin-your-packages/</p>
-<p class="no-print created_at dateline">Published: <span class="reldate">September 26, 2012</span></p><p class="print-only created_at dateline">Published: <span>September 26, 2012</span></p>
+<p class="no-print created_at dateline">Published: <span class="reldate">September 26, 2012</span></p><p class="print-only created_at dateline">Published: <span>September 26, 2012</span></p><p class="no-print updated_at dateline">Last updated: <span class="reldate">May 08, 2013</span> <a id="toggle-edits" href="#">(highlight updates)</a></p><p class="print-only updated_at dateline">Last updated: <span>May 08, 2013</span></p>
 <p><strong>tl;dr</strong> Be explicit, pin all your dependencies, and let
 <a href="http://github.com/nvie/pip-tools">pip-tools</a> keep them fresh.</p>
 <p>In building your Python application and its dependencies for production, you
 want to make sure that your builds are predictable and deterministic.
 Therefore, always pin your dependencies.</p>
+<p><ins><strong>Update:</strong> A newer blog post about the future of pip-tools is available too:
+<a href="/posts/better-package-management/">Better Package Management</a>.</ins></p>
 <h3>Pin Explicitly</h3>
 <p>Don’t ever use these styles in <code>requirements.txt</code>:</p>
 <ul>
@@ -158,10 +160,10 @@ conflicts in version control.</p>
 useful if you want to keep some packages installed in your local environment,
 but don’t want to have them reflected in your requirements files.</p>
 <h3>Contributing</h3>
-<p>This stuff is all pretty beta.  I’m using it to manage a few client projects
-myself, and I’m happy with it.  Still, there must be edge cases that aren’t
-covered by this yet.  If so, please tell me.  Or <a href="http://github.com/nvie/pip-tools">fork the project on
-GitHub</a> and submit a pull request.</p>
+<p><del>This stuff is all pretty beta.</del> <ins><code>pip-tools</code> 0.x is relied on by many already
+on a daily/weekly basis.  It’s worth noting that we’re working on <a href="/posts/better-package-management/">Better
+Package Management</a> too, which will be the
+future of <code>pip-tools</code>.  If you want to contribute, please shout out.</ins></p>
 </div>
 
 
